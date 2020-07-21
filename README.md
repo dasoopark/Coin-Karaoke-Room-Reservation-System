@@ -11,3 +11,5 @@ Kpu Summer Vaction Project
 ## Period 
 * 2020/07/20 ~ 2020/08/14
 
+## function    
+* 
