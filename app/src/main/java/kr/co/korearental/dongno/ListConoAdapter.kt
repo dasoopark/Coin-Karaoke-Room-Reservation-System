@@ -11,7 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 
-class ListConoAdapter(val context: Context, val ListCono : ArrayList<Cono> ) :
+class ListConoAdapter(val context: Context, val ListCono: ArrayList<Cono> ) :
     RecyclerView.Adapter<ListConoAdapter.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListConoAdapter.Holder {
@@ -37,7 +37,7 @@ class ListConoAdapter(val context: Context, val ListCono : ArrayList<Cono> ) :
         val conoDistance= itemView?.findViewById<TextView>(R.id.txtdistance)
 
         fun bind(cono:Cono, context:Context){
-            conoImg?.setImageDrawable(cono.img)
+            conoImg?.setImageResource(cono.img)
             conoName?.text=cono.name
             conoAddress?.text=cono.address
             conoRating?.rating=cono.rating
