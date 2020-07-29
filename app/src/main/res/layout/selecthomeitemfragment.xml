@@ -2,24 +2,25 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             app:layout_constraintGuide_begin="16dp" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical"
             app:layout_constraintGuide_end="16dp" />
 
@@ -39,8 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:hint="노래방이름"
-            android:text="@string/노래방이름"
+            android:text="노래방이름"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/guideline"
@@ -51,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:hint="노래방 주소"
+            android:text="노래방 주소"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/cono_name" />
@@ -61,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:hint="노래방 거리"
+            android:text="노래방 거리"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/cono_address" />
@@ -71,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:hint="전화번호"
+            android:text="전화번호"
             android:textSize="20dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/guideline"
@@ -82,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:hint="055-555-5555"
+            android:text="055-555-5555"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/cono_call" />
@@ -92,7 +92,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:hint="요금정보"
+            android:text="요금정보"
             android:textSize="20dp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/guideline"
@@ -103,7 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:hint="1곡 500원, 3곡 1000원"
+            android:text="1곡 500원, 3곡 1000원"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/cono_payinfo" />
@@ -113,7 +113,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:hint="30분 3000원, 1시간 5000원"
+            android:text="30분 3000원, 1시간 5000원"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/cono_payinfotxt" />
@@ -136,43 +136,70 @@
         <View
             android:id="@+id/line1"
             android:layout_width="380dp"
-            android:layout_height="1dp"
-            android:background="@color/colorAccent"
-            app:layout_constraintBottom_toTopOf="@+id/ratingBar"
-            app:layout_constraintEnd_toStartOf="@+id/or"
+            android:layout_height="3dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="1dp"
+            android:background="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toStartOf="@id/guideline" />
+            app:layout_constraintStart_toStartOf="@id/guideline"
+            app:layout_constraintTop_toBottomOf="@+id/cono_payinfotxt2"
+            app:layout_constraintVertical_bias="0.0" />
 
-        <RatingBar
-            android:id="@+id/ratingBar"
-            style="@style/Widget.AppCompat.RatingBar.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="17dp"
-            android:layout_marginTop="4dp"
-            android:numStars="5"
-            android:stepSize="1"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/cono_payinfotxt2" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/line1"
+            app:layout_constraintVertical_bias="1.0">
 
-        <TextView
-            android:id="@+id/review"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="리뷰(숫자)"
-            android:textSize="20dp"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+            <TextView
+                android:id="@+id/reviewtext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="리뷰(숫자) >"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="16dp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="41dp"
-            android:layout_height="178dp"
-            app:layout_constraintBottom_toTopOf="@+id/bottomNavigationView"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/review" />
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="16dp" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView2"
+                android:layout_width="283dp"
+                android:layout_height="25dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintHorizontal_bias="0.104"
+                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintTop_toBottomOf="@+id/reviewtext"
+                app:layout_constraintVertical_bias="0.109" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </ScrollView>

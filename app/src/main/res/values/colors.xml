@@ -7,6 +7,8 @@
     <color name="purple">#C86DD7</color>
     <color name="white">#FFFFFF</color>
     <color name="logbtn">#FFC107</color>
+    <color name="textColorPrimary">@color/logbtn</color>
+    <color name="textColorSecondary">#FFC107</color>
 
 
     <color name="login_form_details">#CCFFFFFF</color>
