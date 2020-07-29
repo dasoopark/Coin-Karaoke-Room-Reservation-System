@@ -10,10 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".justtest">
-        <activity android:name=".ListCono"></activity>
-        <activity android:name=".HomeActivity"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".selecthomeitemActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

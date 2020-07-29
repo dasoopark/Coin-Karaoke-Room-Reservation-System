@@ -11,4 +11,6 @@
     <string name="알림" />
     <string name="마이페이지" />
     <string name="노래방이름" />
+    <string name="리뷰작성" />
+    <string name="결제하기" />
 </resources>

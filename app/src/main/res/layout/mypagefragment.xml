@@ -69,17 +69,6 @@
             android:layout_marginTop="5dp"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/member_info"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:background="#fff"
-                android:clickable="true"
-                android:drawableLeft="@drawable/person"
-                android:elevation="4dp"
-                android:padding="20dp"
-                android:text="회원정보" />
 
             <TextView
                 android:id="@+id/member_paymentinfo"
@@ -94,6 +83,31 @@
                 android:elevation="4dp"
                 android:padding="20dp"
                 android:text="결제 내역" />
+
+            <TextView
+                android:id="@+id/member_logout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="#fff"
+                android:clickable="true"
+                android:drawableLeft="@drawable/person"
+                android:elevation="4dp"
+                android:padding="20dp"
+                android:text="로그아웃" />
+
+            <TextView
+                android:id="@+id/member_delete"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="#fff"
+                android:clickable="true"
+                android:drawableLeft="@drawable/clear"
+                android:elevation="4dp"
+                android:padding="20dp"
+                android:text="회원탈퇴" />
+
 
 
         </LinearLayout>
