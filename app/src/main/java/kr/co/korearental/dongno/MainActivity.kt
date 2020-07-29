@@ -31,9 +31,5 @@ class MainActivity : AppCompatActivity() {
                 .show()
                 // Dialog 사이즈 조절 하기
         }
-        button6.setOnClickListener(){
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-        }
     }
 }
