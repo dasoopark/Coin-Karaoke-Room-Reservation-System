@@ -2,6 +2,7 @@ package kr.co.korearental.dongno
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.storage.FirebaseStorage
 
 class ListConoAdapter(val context: Context, val ListCono: ArrayList<Cono> ) :
     RecyclerView.Adapter<ListConoAdapter.Holder>() {
@@ -37,7 +39,12 @@ class ListConoAdapter(val context: Context, val ListCono: ArrayList<Cono> ) :
         val conoDistance= itemView?.findViewById<TextView>(R.id.txtdistance)
 
         fun bind(cono:Cono, context:Context){
-            conoImg?.setImageResource(cono.img)
+            val storage = FirebaseStorage.getInstance()
+            val ref = storage.getReferenceFromUrl(cono.img)
+            ref.getBytes(Long.MAX_VALUE).addOnSuccessListener { bytes->
+                val bmp= BitmapFactory.decodeByteArray(bytes,0,bytes.size)
+                conoImg?.setImageBitmap(bmp)
+            }.addOnFailureListener{}
             conoName?.text=cono.name
             conoAddress?.text=cono.address
             conoRating?.rating=cono.rating

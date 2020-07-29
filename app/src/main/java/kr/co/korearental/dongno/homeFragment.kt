@@ -16,6 +16,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.LocationServices
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.home.*
 import kotlinx.android.synthetic.main.homefragment.*
 import kotlinx.android.synthetic.main.homefragment.view.*
@@ -27,23 +33,32 @@ class homeFragment : Fragment() {
     private var mCurrentLatitude: Double = 0.0
     private var mCurrentLongitude: Double = 0.0
 
-    var listcono = arrayListOf<Cono>(
-        Cono(0,"A코인노래방","경기도 시흥시 정왕1동",3.1.toFloat(),126),
-        Cono(0,"B코인노래방","경기도 시흥시 정왕1동",3.1.toFloat(),126),
-        Cono(0,"C코인노래방","경기도 시흥시 정왕1동",3.1.toFloat(),126),
-        Cono(0,"D코인노래방","경기도 시흥시 정왕1동",3.1.toFloat(),126),
-        Cono(0,"코인노래방","경기도 시흥시 정왕1동",3.1.toFloat(),126),
-        Cono(0,"A코인노래방","경기도 시흥시 정왕1동",3.1.toFloat(),126),
-        Cono(0,"A코인노래방","경기도 시흥시 정왕1동",3.1.toFloat(),126),
-        Cono(0,"A코인노래방","경기도 시흥시 정왕1동",3.1.toFloat(),126),
-        Cono(0,"A코인노래방","경기도 시흥시 정왕1동",3.1.toFloat(),126),
-        Cono(0,"A코인노래방","경기도 시흥시 정왕1동",3.1.toFloat(),126)
-    )
+    var listcono = arrayListOf<Cono>()
+    val database = FirebaseDatabase.getInstance()
+    val storage = FirebaseStorage.getInstance()
+    val conoRef = database.getReference("Cono")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val view: View = inflater.inflate(R.layout.homefragment, container, false)
         val mRecyclerView=view.findViewById(R.id.conoRV) as RecyclerView
+        lateinit var name : String
+        lateinit var address : String
+        lateinit var imgUrl : String
+
+        conoRef.addListenerForSingleValueEvent(object:ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {}
+
+            override fun onDataChange(p0: DataSnapshot) {
+                for (snapshot in p0.children){
+                    name=snapshot.child("info/name").value.toString()
+                    address=snapshot.child("info/address").value.toString()
+                    imgUrl=snapshot.child("info/image").value.toString()
+                }
+                listcono.add(Cono(imgUrl,name,address,3.1.toFloat(),126))
+            }
+
+        })
         mRecyclerView.layoutManager=LinearLayoutManager(requireContext())
         mRecyclerView.adapter=ListConoAdapter(requireContext(), listcono)
         mRecyclerView.setHasFixedSize(true)
@@ -56,7 +71,6 @@ class homeFragment : Fragment() {
             intent.putExtra("latitude", mCurrentLatitude)
             intent.putExtra("longitude", mCurrentLongitude)
             startActivity(intent)
-
         }
         return view
     }
