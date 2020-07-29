@@ -20,10 +20,10 @@ class MainActivity : AppCompatActivity() {
             val dialogText = dialogView.findViewById<EditText>(R.id.username)
             val dialogRatingBar = dialogView.findViewById<EditText>(R.id.password)
             builder.setView(dialogView)
-                .setPositiveButton("취소") { dialogInterface, i ->
+                .setPositiveButton("로그인") { dialogInterface, i ->
 
                 }
-                .setNegativeButton("로그인") { dialogInterface, i ->
+                .setNegativeButton("취소") { dialogInterface, i ->
                     /* 취소일 때 아무 액션이 없으므로 빈칸 */
 
                 }
