@@ -11,6 +11,9 @@
         android:theme="@style/AppTheme">
 
         <activity android:name=".justtest">
+        <activity android:name=".ListCono"></activity>
+        <activity android:name=".HomeActivity"></activity>
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
