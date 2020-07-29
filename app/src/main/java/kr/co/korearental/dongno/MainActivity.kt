@@ -1,5 +1,7 @@
 package kr.co.korearental.dongno
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -9,6 +11,8 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.database.FirebaseDatabase
 import com.kakao.auth.ApiErrorCode
 import com.kakao.auth.ISessionCallback
@@ -27,10 +31,18 @@ import java.security.MessageDigest
 class MainActivity : AppCompatActivity() {
 
     private lateinit var callback: SessionCallback
+    private val LOCATION_PERMISSION_REQUEST_CODE = 1000
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+        }
 
         //manifests에 globalapplication 추가했는지 꼭 확인할 것!
         callback = SessionCallback()
@@ -86,6 +98,7 @@ class MainActivity : AppCompatActivity() {
         override fun onSessionOpened() {
             // 로그인 세션이 열렸을 때
             UserManagement.getInstance().me( object : MeV2ResponseCallback() {
+                @SuppressLint("MissingPermission")
                 override fun onSuccess(result: MeV2Response?) {
                     var needsScopeAutority = ""
                     if(result!!.kakaoAccount.emailNeedsAgreement()==OptionalBoolean.TRUE) {
@@ -119,7 +132,7 @@ class MainActivity : AppCompatActivity() {
                         //DB
 
                         val database = FirebaseDatabase.getInstance()
-                        var userRef = database.getReference("User")
+                        val userRef = database.getReference("User")
 
                         val userid = result.id.toString()
                         val usernickname = result.kakaoAccount.profile.nickname
@@ -132,8 +145,25 @@ class MainActivity : AppCompatActivity() {
 
                         // 로그인이 성공했을 때
                         val intent = Intent(this@MainActivity, HomeActivity::class.java)
-                        startActivity(intent)
-                        finish()
+
+                        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this@MainActivity)
+                        fusedLocationClient.lastLocation
+                            .addOnSuccessListener { location ->
+                                if(location == null) {
+                                    Toast.makeText(applicationContext, "location get fail", Toast.LENGTH_SHORT).show()
+                                } else {
+                                    intent.putExtra("userid", result.id.toString())
+                                    intent.putExtra("latitude", location.latitude)
+                                    intent.putExtra("longitude", location.longitude)
+                                    startActivity(intent)
+                                    finish()
+                                    //Toast.makeText(requireContext(), "${location.latitude}, ${location.longitude}", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                            .addOnFailureListener {
+                                it.printStackTrace()
+                                Toast.makeText(applicationContext, "위치를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show()
+                            }
                     }
                 }
 

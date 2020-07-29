@@ -3,6 +3,8 @@
     package="kr.co.korearental.dongno">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
     <application
         android:usesCleartextTraffic="true"
@@ -14,7 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".HomeActivity"></activity>
+        <activity android:name=".HomeActivity"/>
+        <activity android:name=".MapSearch"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,6 +29,9 @@
         <meta-data
             android:name="com.kakao.sdk.AppKey"
             android:value="53106cfb2aa34787539a2188696516f8" />
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="4cbtm9g0q6" />
     </application>
 
 </manifest>
