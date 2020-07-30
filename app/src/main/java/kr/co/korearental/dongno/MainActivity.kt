@@ -33,6 +33,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var callback: SessionCallback
     private val LOCATION_PERMISSION_REQUEST_CODE = 1000
 
+    private var backKeyPressedTime: Long = 0
+    private lateinit var toast: Toast
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -190,5 +193,19 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
+    }
+
+    override fun onBackPressed() {
+        if (System.currentTimeMillis() > backKeyPressedTime + 1500) {
+            backKeyPressedTime = System.currentTimeMillis()
+            toast = Toast.makeText(this, "뒤로 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT)
+            toast.show()
+            return
+        }
+
+        if (System.currentTimeMillis() <= backKeyPressedTime + 1500) {
+            finish()
+            toast.cancel()
+        }
     }
 }

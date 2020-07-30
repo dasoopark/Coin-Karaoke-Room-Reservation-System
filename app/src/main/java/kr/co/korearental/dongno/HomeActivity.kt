@@ -1,11 +1,11 @@
 package kr.co.korearental.dongno
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.android.synthetic.main.home.*
-
 
 
 class HomeActivity : AppCompatActivity(){
@@ -15,6 +15,10 @@ class HomeActivity : AppCompatActivity(){
     }
 
     val manager = supportFragmentManager
+    var selected = 1
+
+    private var backKeyPressedTime: Long = 0
+    private lateinit var toast: Toast
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,29 +33,46 @@ class HomeActivity : AppCompatActivity(){
 
         // start from Home
         changeFragmentTo(FragmentType.home)
+        selected = 1
     }
 
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
         when (item.itemId) {
             R.id.tab1 -> {
+                if(selected==1){
+                    return@OnNavigationItemSelectedListener true
+                }
                 title = "홈"
+                selected=1
                 changeFragmentTo(FragmentType.home)
                 return@OnNavigationItemSelectedListener true
             }
 
             R.id.tab2 -> {
+                if(selected==2){
+                    return@OnNavigationItemSelectedListener true
+                }
                 title = "즐겨찾기"
+                selected=2
                 changeFragmentTo(FragmentType.bookmark)
                 return@OnNavigationItemSelectedListener true
             }
 
             R.id.tab3 -> {
+                if(selected==3){
+                    return@OnNavigationItemSelectedListener true
+                }
                 title = "알림"
+                selected=3
                 changeFragmentTo(FragmentType.alarm)
                 return@OnNavigationItemSelectedListener true
             }
             R.id.tab4 -> {
+                if(selected==4){
+                    return@OnNavigationItemSelectedListener true
+                }
                 title = "마이 페이지"
+                selected=4
                 changeFragmentTo(FragmentType.mypage)
                 return@OnNavigationItemSelectedListener true
             }
@@ -83,9 +104,24 @@ class HomeActivity : AppCompatActivity(){
                 transaction.replace(R.id.main_layout, mypagefragment)
             }
         }
-        transaction.addToBackStack(null)
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+        //transaction.addToBackStack(null)
+        transaction.disallowAddToBackStack()
         transaction.commit()
     }
 
+    override fun onBackPressed() {
+        if (System.currentTimeMillis() > backKeyPressedTime + 1500) {
+            backKeyPressedTime = System.currentTimeMillis()
+            toast = Toast.makeText(this, "\'뒤로\' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT)
+            toast.show()
+            return
+        }
+
+        if (System.currentTimeMillis() <= backKeyPressedTime + 1500) {
+            finish()
+            toast.cancel()
+        }
+    }
 
 }

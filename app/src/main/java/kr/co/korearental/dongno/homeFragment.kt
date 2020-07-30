@@ -25,6 +25,7 @@ import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.home.*
 import kotlinx.android.synthetic.main.homefragment.*
 import kotlinx.android.synthetic.main.homefragment.view.*
+import kotlinx.coroutines.delay
 
 
 class homeFragment : Fragment() {
@@ -54,15 +55,13 @@ class homeFragment : Fragment() {
                     name=snapshot.child("info/name").value.toString()
                     address=snapshot.child("info/address").value.toString()
                     imgUrl=snapshot.child("info/image").value.toString()
+                    listcono.add(Cono(imgUrl,name,address,3.1.toFloat(),126))
                 }
-                listcono.add(Cono(imgUrl,name,address,3.1.toFloat(),126))
+                mRecyclerView.layoutManager=LinearLayoutManager(requireContext())
+                mRecyclerView.adapter=ListConoAdapter(requireContext(), listcono)
+                mRecyclerView.setHasFixedSize(true)
             }
-
         })
-
-        mRecyclerView.layoutManager=LinearLayoutManager(requireContext())
-        mRecyclerView.adapter=ListConoAdapter(requireContext(), listcono)
-        mRecyclerView.setHasFixedSize(true)
 
         view.searchButton.setOnClickListener {
             mCurrentLatitude = activity?.intent?.getDoubleExtra("latitude", 0.0)!!
@@ -73,6 +72,7 @@ class homeFragment : Fragment() {
             intent.putExtra("longitude", mCurrentLongitude)
             startActivity(intent)
         }
+
         return view
     }
 
