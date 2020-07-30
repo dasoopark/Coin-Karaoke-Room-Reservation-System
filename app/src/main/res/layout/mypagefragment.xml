@@ -62,53 +62,47 @@
 
 
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/profile_layout"
             android:layout_marginTop="5dp"
             android:orientation="vertical">
 
-
-            <TextView
+            <Button
                 android:id="@+id/member_paymentinfo"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:layout_marginBottom="3dp"
-                android:layout_marginTop="3dp"
-                android:drawableLeft="@drawable/payment"
+                android:drawableStart="@drawable/payment"
                 android:background="#fff"
-                android:clickable="true"
                 android:elevation="4dp"
                 android:padding="20dp"
-                android:text="결제 내역" />
+                android:text=" 결제 내역"
+                android:textAlignment="textStart" />
 
-            <TextView
+            <Button
                 android:id="@+id/member_logout"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:background="#fff"
-                android:clickable="true"
-                android:drawableLeft="@drawable/person"
+                android:drawableStart="@drawable/person"
                 android:elevation="4dp"
                 android:padding="20dp"
-                android:text="로그아웃" />
+                android:text=" 로그아웃"
+                android:textAlignment="textStart"/>
 
-            <TextView
+            <Button
                 android:id="@+id/member_delete"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:background="#fff"
-                android:clickable="true"
-                android:drawableLeft="@drawable/clear"
+                android:drawableStart="@drawable/clear"
                 android:elevation="4dp"
                 android:padding="20dp"
-                android:text="회원탈퇴" />
-
-
-
+                android:text=" 회원 탈퇴"
+                android:textAlignment="textStart" />
         </LinearLayout>
     </RelativeLayout>
 </ScrollView>
