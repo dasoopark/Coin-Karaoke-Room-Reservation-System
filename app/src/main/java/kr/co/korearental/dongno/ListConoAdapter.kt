@@ -2,6 +2,7 @@ package kr.co.korearental.dongno
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,8 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.storage.FirebaseStorage
 
@@ -28,6 +31,8 @@ class ListConoAdapter(val context: Context, val ListCono: ArrayList<Cono> ) :
     override fun onBindViewHolder(holder: ListConoAdapter.Holder, position: Int) {
         holder?.bind(ListCono[position],context)
         holder.itemView.setOnClickListener {
+            val intent = Intent(context, selecthomeitemActivity::class.java)
+            context.startActivity(intent)
             Toast.makeText(context,"Clicked: ${ListCono.get(position).name}", Toast.LENGTH_SHORT).show()
         }
     }

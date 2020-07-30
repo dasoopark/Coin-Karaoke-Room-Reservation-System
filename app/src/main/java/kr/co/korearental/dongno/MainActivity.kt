@@ -64,6 +64,10 @@ class MainActivity : AppCompatActivity() {
                 // Dialog 사이즈 조절 하기
         }
 
+        account_plus.setOnClickListener{
+            val intent = Intent(this, SignupActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

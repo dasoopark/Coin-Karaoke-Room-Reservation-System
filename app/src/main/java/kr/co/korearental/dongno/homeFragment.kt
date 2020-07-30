@@ -59,6 +59,7 @@ class homeFragment : Fragment() {
             }
 
         })
+
         mRecyclerView.layoutManager=LinearLayoutManager(requireContext())
         mRecyclerView.adapter=ListConoAdapter(requireContext(), listcono)
         mRecyclerView.setHasFixedSize(true)
