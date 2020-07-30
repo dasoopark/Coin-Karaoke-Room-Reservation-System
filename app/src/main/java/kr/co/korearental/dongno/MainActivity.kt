@@ -2,6 +2,7 @@ package kr.co.korearental.dongno
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -35,11 +36,9 @@ class MainActivity : AppCompatActivity() {
 
     private var backKeyPressedTime: Long = 0
     private lateinit var toast: Toast
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
             && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -55,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         btn_login.setOnClickListener{
             val builder = AlertDialog.Builder(this)
             val dialogView = layoutInflater.inflate(R.layout.login_dialog, null)
-            val dialogText = dialogView.findViewById<EditText>(R.id.username)
+            val dialogText = dialogView.findViewById<EditText>(R.id.reviewContent)
             val dialogRatingBar = dialogView.findViewById<EditText>(R.id.password)
             builder.setView(dialogView)
                 .setPositiveButton("로그인") { dialogInterface, i ->
@@ -145,7 +144,7 @@ class MainActivity : AppCompatActivity() {
                         val usernickname = result.kakaoAccount.profile.nickname
                         val userthumbnail = result.kakaoAccount.profile.thumbnailImageUrl
                         val useremail = result.kakaoAccount.email
-
+                        GlobalApplication.prefs.setString("userid",userid)
                         userRef.child(userid).child("info").child("name").setValue(usernickname)
                         userRef.child(userid).child("info").child("email").setValue(useremail)
                         userRef.child(userid).child("info").child("thumbnail").setValue(userthumbnail)

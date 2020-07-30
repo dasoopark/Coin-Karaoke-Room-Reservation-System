@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.homefragment.view.*
 import kotlinx.coroutines.delay
 
 
-class homeFragment : Fragment() {
+open class homeFragment : Fragment() {
 
     private val LOCATION_PERMISSION_REQUEST_CODE = 1000
     private var mCurrentLatitude: Double = 0.0
@@ -36,7 +36,6 @@ class homeFragment : Fragment() {
 
     var listcono = arrayListOf<Cono>()
     val database = FirebaseDatabase.getInstance()
-    val storage = FirebaseStorage.getInstance()
     val conoRef = database.getReference("Cono")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
