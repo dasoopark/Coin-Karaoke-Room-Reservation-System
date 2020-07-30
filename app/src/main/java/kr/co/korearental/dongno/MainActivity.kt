@@ -40,7 +40,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
             && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
@@ -55,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         btn_login.setOnClickListener{
             val builder = AlertDialog.Builder(this)
             val dialogView = layoutInflater.inflate(R.layout.login_dialog, null)
-            val dialogText = dialogView.findViewById<EditText>(R.id.username)
+            val dialogText = dialogView.findViewById<EditText>(R.id.reviewContent)
             val dialogRatingBar = dialogView.findViewById<EditText>(R.id.password)
             builder.setView(dialogView)
                 .setPositiveButton("로그인") { dialogInterface, i ->
