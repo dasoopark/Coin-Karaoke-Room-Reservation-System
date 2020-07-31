@@ -1,6 +1,8 @@
 package kr.co.korearental.dongno
 
+import android.graphics.Color
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -16,6 +18,7 @@ import kotlinx.android.synthetic.main.home.*
 import kotlinx.android.synthetic.main.reviewdialog.*
 import kotlinx.android.synthetic.main.reviewdialog.view.*
 import kotlinx.android.synthetic.main.selecthomeitem.*
+import kotlinx.android.synthetic.main.selecthomeitemfragment.*
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -26,6 +29,8 @@ class selecthomeitemActivity : AppCompatActivity(){
     val manager = supportFragmentManager
     val database=FirebaseDatabase.getInstance()
     val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
+
+
         when (item.itemId) {
             R.id.reviewtab -> {
                 val builder = AlertDialog.Builder(this)
@@ -79,8 +84,14 @@ class selecthomeitemActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.selecthomeitem)
 
-        initView()
+        //뒤로가기버튼 => HomeActivity
+        val actionbar = supportActionBar
+        if (actionbar != null) {
+            actionbar.setDisplayHomeAsUpEnabled(true)
+            actionbar.setHomeButtonEnabled(true)
+        }
 
+        initView()
     }
 
     private fun initView() {
@@ -89,6 +100,15 @@ class selecthomeitemActivity : AppCompatActivity(){
         supportFragmentManager.beginTransaction().replace(R.id.main_layout2, selecthomeitemFragment()).commit()
     }
 
-
+    //뒤로가기 버튼 => 홈액티비티로 돌아감
+    override fun  onOptionsItemSelected(item: MenuItem) : Boolean{
+        when (item.itemId){
+            android.R.id.home->{ //toolbar의 back키 눌렀을 때 동작
+                finish()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
 }

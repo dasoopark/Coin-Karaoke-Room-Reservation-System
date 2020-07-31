@@ -1,5 +1,6 @@
 package kr.co.korearental.dongno
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
@@ -27,6 +28,18 @@ import kotlinx.android.synthetic.main.mypagefragment.*
 import kotlinx.android.synthetic.main.mypagefragment.view.*
 
 class mypageFragment : Fragment(){
+
+    //결제 내역 누를때 화면전환 되는거
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        member_paymentinfo.setOnClickListener{
+            activity?.let{
+                val intent = Intent(context, paylogActivity::class.java)
+                startActivity(intent)
+            }
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val database = FirebaseDatabase.getInstance()
