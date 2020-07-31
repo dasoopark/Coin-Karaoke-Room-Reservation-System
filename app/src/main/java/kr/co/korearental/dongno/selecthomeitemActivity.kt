@@ -37,11 +37,17 @@ class selecthomeitemActivity : AppCompatActivity(){
                             Toast.makeText(this,"get userID error", Toast.LENGTH_SHORT).show()
                         }else{
                             val now = SimpleDateFormat("yyyy/MM/dd HH:mm:ss",Locale.KOREA).format(Calendar.getInstance().time)
-                            val userRef=database.getReference("User/${userid}")
-                            val conoRef=database.getReference("Cono")
-                            userRef.child("${intent.getStringExtra("cononame")}").child("content").setValue(dialogView.reviewContent.text.toString())
-                            userRef.child("${intent.getStringExtra("cononame")}").child("rating").setValue(dialogView.ratingBar.rating)
-                            userRef.child("${intent.getStringExtra("cononame")}").child("Time").setValue(now)
+                            val item_cononame=intent.getStringExtra("cononame")
+                            val userRef=database.getReference("User/${userid}/${item_cononame}")
+                            val conoRef=database.getReference("Cono/${intent.getStringExtra("position")}/Review/${userid}")
+                            //유저 DB에 삽입
+                            userRef.child("content").setValue(dialogView.reviewContent.text.toString())
+                            userRef.child("rating").setValue(dialogView.ratingBar.rating)
+                            userRef.child("Time").setValue(now)
+                            //코노 DB에 삽입
+                            conoRef.child("review_content").setValue(dialogView.reviewContent.text.toString())
+                            conoRef.child("rating").setValue(dialogView.ratingBar.rating)
+                            conoRef.child("Time").setValue(now)
                         }
                     }
                     .setNegativeButton("취소") { dialogInterface, i ->

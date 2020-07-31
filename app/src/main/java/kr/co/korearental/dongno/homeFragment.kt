@@ -45,7 +45,7 @@ open class homeFragment : Fragment() {
         lateinit var name : String
         lateinit var address : String
         lateinit var imgUrl : String
-
+        var index : Int=0
         conoRef.addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {}
 
@@ -54,7 +54,8 @@ open class homeFragment : Fragment() {
                     name=snapshot.child("info/name").value.toString()
                     address=snapshot.child("info/address").value.toString()
                     imgUrl=snapshot.child("info/image").value.toString()
-                    listcono.add(Cono(imgUrl,name,address,3.1.toFloat(),126))
+                    index++
+                    listcono.add(Cono(index,imgUrl,name,address,3.1.toFloat(),126))
                 }
                 mRecyclerView.layoutManager=LinearLayoutManager(requireContext())
                 mRecyclerView.adapter=ListConoAdapter(requireContext(), listcono)

@@ -34,6 +34,7 @@ class ListConoAdapter(val context: Context, val ListCono: ArrayList<Cono> ) :
         holder.itemView.setOnClickListener {
             val intent = Intent(context, selecthomeitemActivity::class.java)
             intent.putExtra("cononame",ListCono.get(position).name)
+            intent.putExtra("position",ListCono.get(position).index.toString())
             context.startActivity(intent)
             //Toast.makeText(context,"Clicked: ${ListCono.get(position).name}", Toast.LENGTH_SHORT).show()
         }
