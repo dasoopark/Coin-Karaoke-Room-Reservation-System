@@ -32,8 +32,7 @@
             app:layout_constraintDimensionRatio="16:11"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/cono" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <TextView
@@ -52,7 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="노래방 주소"
+            android:hint="노래방 주소"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/cono_name" />
@@ -62,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="노래방 거리"
+            android:hint="노래방 거리"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/cono_address" />
@@ -83,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="055-555-5555"
+            android:hint="000-000-0000"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/cono_call" />
@@ -104,7 +103,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="1곡 500원, 3곡 1000원"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/cono_payinfo" />
@@ -114,7 +112,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="30분 3000원, 1시간 5000원"
             android:textSize="20dp"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/cono_payinfotxt" />
@@ -190,7 +187,7 @@
                 app:layout_constraintGuide_end="16dp" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView2"
+                android:id="@+id/reviewRV"
                 android:layout_width="283dp"
                 android:layout_height="25dp"
                 android:layout_marginBottom="109dp"

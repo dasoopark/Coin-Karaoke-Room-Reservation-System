@@ -66,7 +66,7 @@ class GlobalApplication : Application() {
 
     companion object {
         var instance: GlobalApplication? = null
-
+        lateinit var prefs : PreferenceUtil
         fun getGlobalApplicationContext() : GlobalApplication? {
             checkNotNull(this) { "this application does not inherit com.kakao.GlobalApplication" }
             return instance
@@ -74,6 +74,7 @@ class GlobalApplication : Application() {
     }
 
     override fun onCreate() {
+        prefs=PreferenceUtil(applicationContext)
         super.onCreate()
         instance = this
         //------------------------------------------------------------

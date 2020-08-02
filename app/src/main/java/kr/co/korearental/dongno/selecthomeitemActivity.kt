@@ -4,17 +4,32 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.common.internal.SignInButtonCreator.createView
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.android.synthetic.main.payment.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.home.*
+import kotlinx.android.synthetic.main.reviewdialog.*
+import kotlinx.android.synthetic.main.reviewdialog.view.*
 import kotlinx.android.synthetic.main.selecthomeitem.*
+import kotlinx.android.synthetic.main.selecthomeitemfragment.*
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
-class selecthomeitemActivity : AppCompatActivity() {
+class selecthomeitemActivity : AppCompatActivity(){
 
     val manager = supportFragmentManager
     private lateinit var mContext : Context
+    val database=FirebaseDatabase.getInstance()
     val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
 
         when (item.itemId) {
@@ -23,6 +38,24 @@ class selecthomeitemActivity : AppCompatActivity() {
                 val dialogView = layoutInflater.inflate(R.layout.reviewdialog, null)
                 builder.setView(dialogView)
                     .setPositiveButton("작성") { dialogInterface, i ->
+                        val userid=GlobalApplication.prefs.getString("userid","error")
+                        if(userid.equals("error")){
+                            Toast.makeText(this,"get userID error", Toast.LENGTH_SHORT).show()
+                        }else{
+                            val now = SimpleDateFormat("yyyy/MM/dd HH:mm:ss",Locale.KOREA).format(Calendar.getInstance().time)
+                            val item_cononame=intent.getStringExtra("cononame")
+                            val userRef=database.getReference("User/${userid}/Review/${item_cononame}")
+                            val conoRef=database.getReference("Cono/${intent.getStringExtra("position")}/Review/${userid}")
+                            //유저 DB에 삽입
+                            userRef.child("content").setValue(dialogView.reviewContent.text.toString())
+                            userRef.child("rating").setValue(dialogView.ratingBar.rating)
+                            userRef.child("Time").setValue(now)
+                            //코노 DB에 삽입
+                            conoRef.child("name").setValue(GlobalApplication.prefs.getString("username","Anonymous"))
+                            conoRef.child("review_content").setValue(dialogView.reviewContent.text.toString())
+                            conoRef.child("rating").setValue(dialogView.ratingBar.rating)
+                            conoRef.child("Time").setValue(now)
+                        }
                     }
                     .setNegativeButton("취소") { dialogInterface, i ->
                         /* 취소일 때 아무 액션이 없으므로 빈칸 */

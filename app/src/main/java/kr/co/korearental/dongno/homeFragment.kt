@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.homefragment.view.*
 import kotlinx.coroutines.delay
 
 
-class homeFragment : Fragment() {
+open class homeFragment : Fragment() {
 
     private val LOCATION_PERMISSION_REQUEST_CODE = 1000
     private var mCurrentLatitude: Double = 0.0
@@ -36,7 +36,6 @@ class homeFragment : Fragment() {
 
     var listcono = arrayListOf<Cono>()
     val database = FirebaseDatabase.getInstance()
-    val storage = FirebaseStorage.getInstance()
     val conoRef = database.getReference("Cono")
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -46,7 +45,7 @@ class homeFragment : Fragment() {
         lateinit var name : String
         lateinit var address : String
         lateinit var imgUrl : String
-
+        var index : Int=0
         conoRef.addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {}
 
@@ -55,7 +54,8 @@ class homeFragment : Fragment() {
                     name=snapshot.child("info/name").value.toString()
                     address=snapshot.child("info/address").value.toString()
                     imgUrl=snapshot.child("info/image").value.toString()
-                    listcono.add(Cono(imgUrl,name,address,3.1.toFloat(),126))
+                    index++ //임시 키
+                    listcono.add(Cono(index,imgUrl,name,address,3.1.toFloat(),126))
                 }
                 mRecyclerView.layoutManager=LinearLayoutManager(requireContext())
                 mRecyclerView.adapter=ListConoAdapter(requireContext(), listcono)
