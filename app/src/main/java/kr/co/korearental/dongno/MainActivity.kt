@@ -145,6 +145,7 @@ class MainActivity : AppCompatActivity() {
                         val userthumbnail = result.kakaoAccount.profile.thumbnailImageUrl
                         val useremail = result.kakaoAccount.email
                         GlobalApplication.prefs.setString("userid",userid)
+                        GlobalApplication.prefs.setString("username",usernickname)
                         userRef.child(userid).child("info").child("name").setValue(usernickname)
                         userRef.child(userid).child("info").child("email").setValue(useremail)
                         userRef.child(userid).child("info").child("thumbnail").setValue(userthumbnail)
