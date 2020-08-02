@@ -54,7 +54,7 @@ open class homeFragment : Fragment() {
                     name=snapshot.child("info/name").value.toString()
                     address=snapshot.child("info/address").value.toString()
                     imgUrl=snapshot.child("info/image").value.toString()
-                    index++
+                    index++ //임시 키
                     listcono.add(Cono(index,imgUrl,name,address,3.1.toFloat(),126))
                 }
                 mRecyclerView.layoutManager=LinearLayoutManager(requireContext())
