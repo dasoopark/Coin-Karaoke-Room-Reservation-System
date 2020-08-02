@@ -158,12 +158,10 @@ class MainActivity : AppCompatActivity() {
                                 if(location == null) {
                                     Toast.makeText(applicationContext, "location get fail", Toast.LENGTH_SHORT).show()
                                 } else {
-                                    intent.putExtra("userid", result.id.toString())
-                                    intent.putExtra("latitude", location.latitude)
-                                    intent.putExtra("longitude", location.longitude)
+                                    GlobalApplication.prefs.setString("latitude", location.latitude.toString())
+                                    GlobalApplication.prefs.setString("longitude", location.longitude.toString())
                                     startActivity(intent)
                                     finish()
-                                    //Toast.makeText(requireContext(), "${location.latitude}, ${location.longitude}", Toast.LENGTH_SHORT).show()
                                 }
                             }
                             .addOnFailureListener {

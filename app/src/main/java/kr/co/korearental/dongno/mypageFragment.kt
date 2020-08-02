@@ -43,7 +43,7 @@ class mypageFragment : Fragment(){
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
         val database = FirebaseDatabase.getInstance()
-        val userid = activity?.intent?.getStringExtra("userid")
+        val userid = GlobalApplication.prefs.getString("userid", "Error")
         val userRef = database.getReference("User/${userid}/info")
 
         userRef.addListenerForSingleValueEvent(object : ValueEventListener {

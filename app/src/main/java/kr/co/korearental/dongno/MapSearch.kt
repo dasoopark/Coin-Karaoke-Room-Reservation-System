@@ -32,8 +32,8 @@ class MapSearch: AppCompatActivity(), OnMapReadyCallback {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
         }
 
-        mCurrentLatitude = intent.getDoubleExtra("latitude", 0.0)
-        mCurrentLongitude = intent.getDoubleExtra("longitude", 0.0)
+        mCurrentLatitude = GlobalApplication.prefs.getString("latitude", "0.0").toDouble()
+        mCurrentLongitude = GlobalApplication.prefs.getString("longitude", "0.0").toDouble()
         Toast.makeText(applicationContext, "$mCurrentLatitude , $mCurrentLongitude", Toast.LENGTH_SHORT).show()
 
         val options = NaverMapOptions().camera(CameraPosition(LatLng(mCurrentLatitude, mCurrentLongitude), 8.0))
