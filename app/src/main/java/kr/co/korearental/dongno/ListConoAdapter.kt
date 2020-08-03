@@ -49,14 +49,17 @@ class ListConoAdapter(val context: Context, val ListCono: ArrayList<Cono> ) :
         fun bind(cono:Cono, context:Context){
             val storage = FirebaseStorage.getInstance()
             val ref = storage.getReferenceFromUrl(cono.img)
+            /*
             ref.getBytes(Long.MAX_VALUE).addOnSuccessListener { bytes->
                 val bmp= BitmapFactory.decodeByteArray(bytes,0,bytes.size)
                 conoImg?.setImageBitmap(bmp)
             }.addOnFailureListener{}
+
+             */
             conoName?.text=cono.name
             conoAddress?.text=cono.address
             conoRating?.rating=cono.rating
-            conoDistance?.text = cono.distance.toString()+"m"
+            conoDistance?.text = cono.distance
         }
     }
 }
