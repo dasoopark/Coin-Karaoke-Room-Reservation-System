@@ -159,8 +159,10 @@ class MainActivity : AppCompatActivity() {
                                 if(location == null) {
                                     Toast.makeText(applicationContext, "location get fail", Toast.LENGTH_SHORT).show()
                                 } else {
-                                    GlobalApplication.prefs.setString("latitude", location.latitude.toString())
-                                    GlobalApplication.prefs.setString("longitude", location.longitude.toString())
+                                    //GlobalApplication.prefs.setString("latitude", location.latitude.toString())
+                                    //GlobalApplication.prefs.setString("longitude", location.longitude.toString())
+                                    GlobalApplication.latitude = location.latitude
+                                    GlobalApplication.longitude = location.longitude
                                     startActivity(intent)
                                     finish()
                                 }
