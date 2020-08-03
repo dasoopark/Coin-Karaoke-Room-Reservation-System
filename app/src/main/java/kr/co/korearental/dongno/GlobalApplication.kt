@@ -66,7 +66,11 @@ class GlobalApplication : Application() {
 
     companion object {
         var instance: GlobalApplication? = null
+        lateinit var mapList : ArrayList<ArrayList<String>>
+        lateinit var mapList_LonLatDist : ArrayList<ArrayList<String>>
         lateinit var prefs : PreferenceUtil
+        var latitude : Double = 0.0
+        var longitude : Double = 0.0
         fun getGlobalApplicationContext() : GlobalApplication? {
             checkNotNull(this) { "this application does not inherit com.kakao.GlobalApplication" }
             return instance
@@ -75,6 +79,8 @@ class GlobalApplication : Application() {
 
     override fun onCreate() {
         prefs=PreferenceUtil(applicationContext)
+        mapList = arrayListOf()
+        mapList_LonLatDist = arrayListOf()
         super.onCreate()
         instance = this
         //------------------------------------------------------------
