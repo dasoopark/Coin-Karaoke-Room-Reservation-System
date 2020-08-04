@@ -84,13 +84,13 @@ open class homeFragment : Fragment() {
                     Handler().postDelayed({
                         view.loadUrl("javascript:window.Android.getHtml(document.getElementsByTagName('body')[0].innerHTML);")
                         for(i in 1..GlobalApplication.mapList.size){
-                            getLongLatDist(GlobalApplication.mapList[i-1][2])
+                            //getLongLatDist(GlobalApplication.mapList[i-1][2])
                             println(GlobalApplication.mapList[i-1])
                         }
                         for(i in 1..GlobalApplication.mapList_LonLatDist.size){
                             println(GlobalApplication.mapList_LonLatDist[i-1])
                         }
-                        /*
+
                         for(i in 1..GlobalApplication.mapList.size){
                             val j=i-1
                             index++
@@ -100,7 +100,7 @@ open class homeFragment : Fragment() {
                         mRecyclerView.adapter=ListConoAdapter(requireContext(), listcono)
                         mRecyclerView.setHasFixedSize(true)
 
-                         */
+
                     }, 2500) // 2.5 초 후에 실행
                 } else {
                     redirect = false;
@@ -139,60 +139,4 @@ open class homeFragment : Fragment() {
         return view
     }
 
-    fun getLongLatDist(value:String) {
-        Thread() {
-            var response = StringBuffer()
-            try {
-                val longitude = GlobalApplication.longitude
-                val latitude = GlobalApplication.latitude
-                val url = URL("https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=$value&coordinate=$longitude,$latitude")
-                val con = url.openConnection() as HttpURLConnection
-                con.requestMethod = "GET"
-                con.setRequestProperty("X-NCP-APIGW-API-KEY-ID", "4cbtm9g0q6")
-                con.setRequestProperty("X-NCP-APIGW-API-KEY", "isgBHvU8rLoXBL9vqdLdhnxmX6ZJg47liwqztbNw")
-                val responseCode = con.responseCode
-                val br: BufferedReader
-                if (responseCode == 200) { // 정상 호출
-                    br = BufferedReader(InputStreamReader(con.inputStream))
-                    println("ㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱㄱ")
-                } else {  // 에러 발생
-                    br = BufferedReader(InputStreamReader(con.errorStream))
-                    println("ㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴㄴ")
-                }
-                var inputLine: String?
-                while (br.readLine().also { inputLine = it } != null) {
-                    response.append(inputLine)
-                }
-                br.close()
-            } catch (e: java.lang.Exception) {
-                println("ㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹㄹ")
-            }
-
-            val json = JSONObject(response.toString())
-            val jsonCount = json.getJSONObject("meta").getInt("count")
-            val jsonArray = json.getJSONArray("addresses")
-            val x: Double
-            val y: Double
-            val dis: Double
-            val distance: String
-            if (jsonCount == 1) {
-                x = jsonArray.getJSONObject(0).getDouble("x")
-                y = jsonArray.getJSONObject(0).getDouble("y")
-                dis = jsonArray.getJSONObject(0).getDouble("distance")
-            } else {
-                x = jsonArray.getJSONObject(1).getDouble("x")
-                y = jsonArray.getJSONObject(1).getDouble("y")
-                dis = jsonArray.getJSONObject(1).getDouble("distance")
-            }
-
-            val distanceArray = dis.toString().split(".")
-            if (distanceArray[0].length > 3) {
-                distance = distanceArray[0].substring(0, distanceArray[0].length - 3) + "." +
-                        distanceArray[0].substring(distanceArray[0].length - 3, distanceArray[0].length - 1) + "km"
-            } else {
-                distance = dis.toString() + "m"
-            }
-            GlobalApplication.mapList_LonLatDist.add(arrayListOf(x.toString(), y.toString(), distance))
-        }
-    }
 }

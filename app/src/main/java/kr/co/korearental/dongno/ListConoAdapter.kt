@@ -30,7 +30,7 @@ class ListConoAdapter(val context: Context, val ListCono: ArrayList<Cono> ) :
 
     override fun onBindViewHolder(holder: ListConoAdapter.Holder, position: Int) {
 
-        holder?.bind(ListCono[position],context)
+        holder.bind(ListCono[position],context)
         holder.itemView.setOnClickListener {
             val intent = Intent(context, selecthomeitemActivity::class.java)
             intent.putExtra("cononame",ListCono.get(position).name)
@@ -48,7 +48,7 @@ class ListConoAdapter(val context: Context, val ListCono: ArrayList<Cono> ) :
 
         fun bind(cono:Cono, context:Context){
             val storage = FirebaseStorage.getInstance()
-            val ref = storage.getReferenceFromUrl(cono.img)
+            //val ref = storage.getReferenceFromUrl(cono.img)
             /*
             ref.getBytes(Long.MAX_VALUE).addOnSuccessListener { bytes->
                 val bmp= BitmapFactory.decodeByteArray(bytes,0,bytes.size)
