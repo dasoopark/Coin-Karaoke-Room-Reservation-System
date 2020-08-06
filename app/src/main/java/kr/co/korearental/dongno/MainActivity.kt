@@ -26,6 +26,11 @@ import com.kakao.usermgmt.response.MeV2Response
 import com.kakao.util.OptionalBoolean
 import com.kakao.util.exception.KakaoException
 import kotlinx.android.synthetic.main.activity_main.*
+import org.json.JSONObject
+import java.io.BufferedReader
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.URL
 import java.security.MessageDigest
 
 
@@ -144,6 +149,9 @@ class MainActivity : AppCompatActivity() {
                         val usernickname = result.kakaoAccount.profile.nickname
                         val userthumbnail = result.kakaoAccount.profile.thumbnailImageUrl
                         val useremail = result.kakaoAccount.email
+                        GlobalApplication.account_name = usernickname
+                        GlobalApplication.account_profile = userthumbnail
+                        GlobalApplication.account_email = useremail
                         GlobalApplication.prefs.setString("userid",userid)
                         GlobalApplication.prefs.setString("username",usernickname)
                         userRef.child(userid).child("info").child("name").setValue(usernickname)
@@ -159,12 +167,39 @@ class MainActivity : AppCompatActivity() {
                                 if(location == null) {
                                     Toast.makeText(applicationContext, "location get fail", Toast.LENGTH_SHORT).show()
                                 } else {
-                                    //GlobalApplication.prefs.setString("latitude", location.latitude.toString())
-                                    //GlobalApplication.prefs.setString("longitude", location.longitude.toString())
                                     GlobalApplication.latitude = location.latitude
                                     GlobalApplication.longitude = location.longitude
-                                    startActivity(intent)
-                                    finish()
+                                    Thread{
+                                        var response = StringBuffer()
+                                        try {
+                                            val apiurl =
+                                                URL("https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc?coords=${GlobalApplication.longitude},${GlobalApplication.latitude}&orders=legalcode&output=json")
+                                            val con = apiurl.openConnection() as HttpURLConnection
+                                            con.requestMethod = "GET"
+                                            con.setRequestProperty("X-NCP-APIGW-API-KEY-ID", "4cbtm9g0q6")
+                                            con.setRequestProperty("X-NCP-APIGW-API-KEY", "isgBHvU8rLoXBL9vqdLdhnxmX6ZJg47liwqztbNw")
+                                            val responseCode = con.responseCode
+                                            val br: BufferedReader
+                                            if (responseCode == 200) { // 정상 호출
+                                                br = BufferedReader(InputStreamReader(con.inputStream))
+                                            } else {  // 에러 발생
+                                                br = BufferedReader(InputStreamReader(con.errorStream))
+                                            }
+                                            var inputLine: String?
+                                            while (br.readLine().also { inputLine = it } != null) {
+                                                response.append(inputLine)
+                                            }
+                                            br.close()
+                                        }catch(e:Exception){
+                                        }
+                                        val json = JSONObject(response.toString())
+                                        val jsonArray = json.getJSONArray("results").getJSONObject(0).getJSONObject("region")
+                                        GlobalApplication.area1 = jsonArray.getJSONObject("area1").getString("name")
+                                        GlobalApplication.area2 = jsonArray.getJSONObject("area2").getString("name")
+                                        GlobalApplication.area3 = jsonArray.getJSONObject("area3").getString("name")
+                                        startActivity(intent)
+                                        finish()
+                                    }.start()
                                 }
                             }
                             .addOnFailureListener {

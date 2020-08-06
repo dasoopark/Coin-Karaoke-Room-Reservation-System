@@ -42,27 +42,14 @@ class mypageFragment : Fragment(){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
+        val view: View = inflater.inflate(R.layout.mypagefragment, container, false)
         val database = FirebaseDatabase.getInstance()
         val userid = GlobalApplication.prefs.getString("userid", "Error")
         val userRef = database.getReference("User/${userid}/info")
 
-        userRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-            }
-            override fun onDataChange(p0: DataSnapshot) {
-                for (snapshot in p0.children) {
-                    if (snapshot.key.equals("email")) {
-                        user_profile_email.text = snapshot.value.toString()
-                    }else if (snapshot.key.equals("name")){
-                        user_profile_name.text = snapshot.value.toString()
-                    }else if (snapshot.key.equals("thumbnail")){
-                        Glide.with(requireActivity()).load(snapshot.value.toString()).apply(RequestOptions.bitmapTransform(MultiTransformation(CenterCrop(), RoundedCorners(200)))).into(user_profile_photo)
-                    }
-                }
-            }
-        })
-
-        val view: View = inflater.inflate(R.layout.mypagefragment, container, false)
+        view.user_profile_email.text = GlobalApplication.account_email
+        view.user_profile_name.text = GlobalApplication.account_name
+        Glide.with(requireActivity()).load(GlobalApplication.account_profile).apply(RequestOptions.bitmapTransform(MultiTransformation(CenterCrop(), RoundedCorners(200)))).into(view.user_profile_photo)
 
         view.member_logout.setOnClickListener {
             UserManagement.getInstance().requestLogout(object : LogoutResponseCallback() {

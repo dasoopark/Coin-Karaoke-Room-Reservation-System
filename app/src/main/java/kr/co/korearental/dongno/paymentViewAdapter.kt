@@ -12,9 +12,9 @@ class paymentViewAdapter (fm : FragmentManager) : FragmentStatePagerAdapter(fm){
     //position에 위치한 프래그먼트를 반환하는 함수다. 우리는 fragments라는 ArrayList에 담아뒀으므로 position을 인덱스 삼아 반환시켜주면 된다.
     override fun getItem(position: Int): Fragment{
         return if(position == 0){
-            test1()
+            payment_songFragment()
         }else{
-            test2()
+            payment_timeFragment()
         }
     }
 
@@ -29,8 +29,8 @@ class paymentViewAdapter (fm : FragmentManager) : FragmentStatePagerAdapter(fm){
 
     override fun getPageTitle(position: Int): CharSequence? {
         return when(position){
-            0 -> "탭메뉴1"
-            1 -> "탭메뉴2"
+            0 -> "곡"
+            1 -> "시간"
             else -> {return "탭메뉴3"}
         }
     }

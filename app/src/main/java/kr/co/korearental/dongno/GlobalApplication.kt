@@ -66,9 +66,14 @@ class GlobalApplication : Application() {
 
     companion object {
         var instance: GlobalApplication? = null
-        lateinit var mapList : ArrayList<ArrayList<String>>
-        lateinit var mapList_LonLatDist : ArrayList<ArrayList<String>>
+        lateinit var listcono : ArrayList<Cono>
         lateinit var prefs : PreferenceUtil
+        lateinit var account_name : String
+        lateinit var account_email : String
+        lateinit var account_profile : String
+        lateinit var area1 : String
+        lateinit var area2 : String
+        lateinit var area3 : String
         var latitude : Double = 0.0
         var longitude : Double = 0.0
         fun getGlobalApplicationContext() : GlobalApplication? {
@@ -79,8 +84,10 @@ class GlobalApplication : Application() {
 
     override fun onCreate() {
         prefs=PreferenceUtil(applicationContext)
-        mapList = arrayListOf()
-        mapList_LonLatDist = arrayListOf()
+        listcono = arrayListOf()
+        account_name = ""
+        account_email = ""
+        account_profile = ""
         super.onCreate()
         instance = this
         //------------------------------------------------------------
