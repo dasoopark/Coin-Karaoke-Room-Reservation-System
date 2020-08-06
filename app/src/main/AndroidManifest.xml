@@ -24,15 +24,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".paylogActivity"
-            android:parentActivityName=".mypageFragment" />
-        <activity android:name=".SignupActivity" />
-        <activity android:name=".selecthomeitemActivity" />
-        <activity android:name=".HomeActivity" />
-        <activity android:name=".MapSearch" />
-        <activity android:name=".MainActivity">
-
+            android:parentActivityName =".mypageFragment"/>
+        <activity android:name=".paymentActivity"/>
+        <activity android:name=".SignupActivity"/>
+        <activity android:name=".selecthomeitemActivity"/>
+        <activity android:name=".HomeActivity"/>
+        <activity android:name=".MapSearch"/>
+        <activity android:name=".MainActivity"/>
+            
         </activity>
 
         <meta-data

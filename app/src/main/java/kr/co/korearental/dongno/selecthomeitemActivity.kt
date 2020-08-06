@@ -1,6 +1,7 @@
 package kr.co.korearental.dongno
 
-import android.graphics.Color
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.EditText
@@ -27,9 +28,9 @@ import java.util.*
 class selecthomeitemActivity : AppCompatActivity(){
 
     val manager = supportFragmentManager
+    private lateinit var mContext : Context
     val database=FirebaseDatabase.getInstance()
     val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->
-
 
         when (item.itemId) {
             R.id.reviewtab -> {
@@ -65,17 +66,8 @@ class selecthomeitemActivity : AppCompatActivity(){
             }
 
             R.id.paymenttab -> {
-                val builder = AlertDialog.Builder(this)
-                val dialogView = layoutInflater.inflate(R.layout.paymentdialog, null)
-                builder.setView(dialogView)
-                    .setPositiveButton("결제") { dialogInterface, i ->
-                    }
-                    .setNegativeButton("취소") { dialogInterface, i ->
-                        /* 취소일 때 아무 액션이 없으므로 빈칸 */
-                    }
-                    .show()
-                // Dialog 사이즈 조절 하기
-                return@OnNavigationItemSelectedListener true
+                val intent = Intent(this, paymentActivity::class.java)
+                startActivity(intent)
             }
         }
         false
