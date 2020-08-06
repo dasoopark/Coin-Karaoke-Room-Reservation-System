@@ -36,7 +36,7 @@ class ListConoAdapter(val context: Context, val ListCono: ArrayList<Cono> ) :
 
     override fun onBindViewHolder(holder: ListConoAdapter.Holder, position: Int) {
 
-        holder?.bind(ListCono[position],context)
+        holder.bind(ListCono[position],context)
         holder.itemView.setOnClickListener {
             val intent = Intent(context, selecthomeitemActivity::class.java)
             intent.putExtra("cononame",ListCono.get(position).name)
