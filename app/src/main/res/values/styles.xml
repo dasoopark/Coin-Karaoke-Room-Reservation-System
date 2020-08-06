@@ -6,7 +6,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
-
+<style name="IntroTheme" parent="Theme.AppCompat.NoActionBar">
+    <item name="android:windowBackground">@drawable/splash_icon</item>
+</style>
     <style name="TextInputLayoutTheme" parent="TextAppearance.AppCompat">
         <item name="android:textColorPrimary">@color/white</item>
         <!-- Hint color and label color in FALSE state -->

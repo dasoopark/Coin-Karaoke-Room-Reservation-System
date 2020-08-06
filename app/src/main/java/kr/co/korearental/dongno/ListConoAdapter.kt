@@ -14,7 +14,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.MultiTransformation
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.storage.FirebaseStorage
+import kotlinx.android.synthetic.main.mypagefragment.view.*
 
 class ListConoAdapter(val context: Context, val ListCono: ArrayList<Cono> ) :
     RecyclerView.Adapter<ListConoAdapter.Holder>() {
@@ -39,27 +45,17 @@ class ListConoAdapter(val context: Context, val ListCono: ArrayList<Cono> ) :
             //Toast.makeText(context,"Clicked: ${ListCono.get(position).name}", Toast.LENGTH_SHORT).show()
         }
     }
-    inner class Holder(itemView: View?): RecyclerView.ViewHolder(itemView!!){
-        val conoImg = itemView?.findViewById<ImageView>(R.id.imgcono)
-        val conoName= itemView?.findViewById<TextView>(R.id.txtname)
-        val conoAddress= itemView?.findViewById<TextView>(R.id.txtaddress)
-        val conoRating= itemView?.findViewById<RatingBar>(R.id.rating)
-        val conoDistance= itemView?.findViewById<TextView>(R.id.txtdistance)
+    inner class Holder(itemView: View): RecyclerView.ViewHolder(itemView){
+        val conoImg = itemView.findViewById<ImageView>(R.id.imgcono)
+        val conoName= itemView.findViewById<TextView>(R.id.txtname)
+        val conoAddress= itemView.findViewById<TextView>(R.id.txtaddress)
+        val conoRating= itemView.findViewById<RatingBar>(R.id.rating)
 
         fun bind(cono:Cono, context:Context){
-            val storage = FirebaseStorage.getInstance()
-            val ref = storage.getReferenceFromUrl(cono.img)
-            /*
-            ref.getBytes(Long.MAX_VALUE).addOnSuccessListener { bytes->
-                val bmp= BitmapFactory.decodeByteArray(bytes,0,bytes.size)
-                conoImg?.setImageBitmap(bmp)
-            }.addOnFailureListener{}
-
-             */
-            conoName?.text=cono.name
-            conoAddress?.text=cono.address
-            conoRating?.rating=cono.rating
-            conoDistance?.text = cono.distance
+            Glide.with(context).load(cono.img).apply(RequestOptions.bitmapTransform(MultiTransformation(CenterCrop()))).into(conoImg)
+            conoName.text=cono.name
+            conoAddress.text=cono.address
+            conoRating.rating=cono.rating
         }
     }
 }

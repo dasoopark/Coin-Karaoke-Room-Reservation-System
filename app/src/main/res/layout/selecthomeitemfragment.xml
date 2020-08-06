@@ -36,14 +36,16 @@
 
         <TextView
             android:id="@+id/cono_name"
-            android:layout_width="wrap_content"
+            android:layout_width="330dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="노래방이름"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textSize="25sp"
             android:textStyle="bold"
+            android:textColor="#000000"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/cono_image" />
+            app:layout_constraintTop_toBottomOf="@+id/cono_image"
+            app:layout_constraintRight_toLeftOf="@+id/bookmark"/>
 
         <TextView
             android:id="@+id/cono_address"
@@ -51,30 +53,21 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:hint="노래방 주소"
-            android:textSize="20dp"
+            android:textSize="15sp"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/cono_name" />
-
-        <TextView
-            android:id="@+id/cono_distance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:hint="노래방 거리"
-            android:textSize="20dp"
-            app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/cono_address" />
 
         <TextView
             android:id="@+id/cono_call"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="10dp"
             android:text="전화번호"
-            android:textSize="20dp"
+            android:textSize="15sp"
             android:textStyle="bold"
+            android:textColor="#000000"
             app:layout_constraintStart_toStartOf="@+id/guideline"
-            app:layout_constraintTop_toBottomOf="@+id/cono_distance" />
+            app:layout_constraintTop_toBottomOf="@+id/cono_address" />
 
         <TextView
             android:id="@+id/cono_callnum"
@@ -82,7 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:hint="000-000-0000"
-            android:textSize="20dp"
+            android:textSize="15sp"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/cono_call" />
 
@@ -90,10 +83,11 @@
             android:id="@+id/cono_payinfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="10dp"
             android:text="요금정보"
-            android:textSize="20dp"
+            android:textSize="15sp"
             android:textStyle="bold"
+            android:textColor="#000000"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/cono_callnum" />
 
@@ -102,7 +96,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textSize="20dp"
+            android:textSize="15sp"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/cono_payinfo" />
 
@@ -111,7 +105,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textSize="20dp"
+            android:textSize="15sp"
             app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/cono_payinfotxt" />
 
@@ -126,10 +120,11 @@
             android:focusableInTouchMode="true"
             android:scaleType="centerCrop"
             android:src="@drawable/star"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2"
-            app:layout_constraintHorizontal_bias="0.723"
-            app:layout_constraintStart_toEndOf="@+id/cono_name"
-            app:layout_constraintTop_toBottomOf="@+id/cono_image" />
+            app:layout_constraintRight_toLeftOf="@+id/guideline2"
+            app:layout_constraintTop_toBottomOf="@+id/cono_image"
+            app:layout_constraintLeft_toRightOf="@+id/cono_name"
+            app:layout_constraintHorizontal_bias="1.0"
+             />
 
         <View
             android:id="@+id/line1"
@@ -161,15 +156,16 @@
                 android:id="@+id/reviewtext"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="리뷰(숫자) >"
-                android:textSize="20dp"
+                android:text="리뷰 >"
+                android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/guideline4"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="@+id/guideline3"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0" />
+                app:layout_constraintVertical_bias="0.0"
+                android:visibility="invisible"/>
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline3"
