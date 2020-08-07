@@ -14,7 +14,7 @@
         android:enabled="true"
         android:icon="@drawable/payment"
         app:showAsAction="always"
-        android:title="결제하기"/>
+        android:title="예약하기"/>
 
 
 
