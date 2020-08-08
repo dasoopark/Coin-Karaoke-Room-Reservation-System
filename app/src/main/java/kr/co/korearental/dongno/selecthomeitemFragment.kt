@@ -9,6 +9,7 @@ import android.view.View
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,7 +28,6 @@ import kotlinx.android.synthetic.main.selecthomeitemfragment.view.*
 class selecthomeitemFragment : Fragment(){
 
     var listreview = arrayListOf<infoReview>()
-    var check : Boolean = false
     var chk = false
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.selecthomeitemfragment, container, false)
@@ -37,6 +37,7 @@ class selecthomeitemFragment : Fragment(){
         val conoRef = database.getReference("Cono/${GlobalApplication.area1}/${GlobalApplication.area2}/${GlobalApplication.area3}/${idx}")
         val userRef = database.getReference("User/${GlobalApplication.prefs.getString("userid","0")}")
         val mRecyclerView=view.findViewById<RecyclerView>(R.id.reviewRV)
+
         //코인노래방 정보 입력
         conoRef.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
@@ -62,22 +63,19 @@ class selecthomeitemFragment : Fragment(){
             }
         })
 
-        /*userRef.child("bookmark").addListenerForSingleValueEvent(object: ValueEventListener{
+        userRef.child("bookmark").addListenerForSingleValueEvent(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {}
             override fun onDataChange(p0: DataSnapshot) {
-                for(snapshot in p0.children){
-                    check = snapshot.key.equals("${idx}")
-                }
-            }
-        })*/
-
-        userRef.child("bookmark/${GlobalApplication.area1}/${GlobalApplication.area2}/${GlobalApplication.area3}").addListenerForSingleValueEvent(object : ValueEventListener{
-            override fun onCancelled(p0: DatabaseError) {}
-            override fun onDataChange(p0: DataSnapshot) {
-                for(snapshot in p0.children) {
-                    if (snapshot.key.equals(idx)) {
-                        chk = true
-                        bookmark.setImageResource(R.drawable.star2)
+                for(area1 in p0.children) {
+                    for(area2 in area1.children){
+                        for (area3 in area2.children){
+                            for(name in area3.children){
+                                if (area1.key.equals(GlobalApplication.area1) && area2.key.equals(GlobalApplication.area2) && area3.key.equals(GlobalApplication.area3) && name.key.equals(idx)) {
+                                    chk = true
+                                    bookmark.setImageResource(R.drawable.star2)
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -88,35 +86,14 @@ class selecthomeitemFragment : Fragment(){
                 userRef.child("bookmark/${GlobalApplication.area1}/${GlobalApplication.area2}/${GlobalApplication.area3}/${idx}").setValue("Cono/${GlobalApplication.area1}/${GlobalApplication.area2}/${GlobalApplication.area3}/${idx}")
                 chk = true
                 bookmark.setImageResource(R.drawable.star2)
+                Toast.makeText(requireContext(), "즐겨찾기 목록에 추가되었습니다.", Toast.LENGTH_SHORT).show()
             }else {
                 userRef.child("bookmark/${GlobalApplication.area1}/${GlobalApplication.area2}/${GlobalApplication.area3}/${idx}").removeValue()
                 chk = false
                 bookmark.setImageResource(R.drawable.star)
+                Toast.makeText(requireContext(), "즐겨찾기 목록에서 삭제되었습니다.", Toast.LENGTH_SHORT).show()
             }
         }
-/*
-        // 즐겨찾기 표시
-        view.bookmark.setOnClickListener {
-            if(check==false){
-                conoRef.addListenerForSingleValueEvent(object : ValueEventListener{
-                    override fun onCancelled(p0: DatabaseError) {}
-                    override fun onDataChange(p0: DataSnapshot) {
-                        for(snapshot in p0.children){
-                            if(snapshot.key.equals("info")){
-                                userRef.child("bookmark/${idx}").setValue(snapshot.value)
-                            }
-                        }
-                    }
-                })
-                check = true
-                bookmark.setImageResource(R.drawable.star2)
-            }
-            else{
-                check = false
-                bookmark.setImageResource(R.drawable.star)
-                userRef.child("bookmark/${idx}").removeValue()
-            }
-        }*/
 
         return view
     }
