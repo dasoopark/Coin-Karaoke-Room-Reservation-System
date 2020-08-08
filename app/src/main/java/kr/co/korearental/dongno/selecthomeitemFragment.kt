@@ -31,12 +31,12 @@ class selecthomeitemFragment : Fragment(){
     var chk = false
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.selecthomeitemfragment, container, false)
-        val storage = FirebaseStorage.getInstance()
         val database = FirebaseDatabase.getInstance()
         val idx = activity?.intent?.getStringExtra("cononame")
-        val conoRef = database.getReference("Cono/${GlobalApplication.area1}/${GlobalApplication.area2}/${GlobalApplication.area3}/${idx}")
+        val conoRef = database.getReference("Cono/${GlobalApplication.search_area1}/${GlobalApplication.search_area2}/${GlobalApplication.search_area3}/${idx}")
         val userRef = database.getReference("User/${GlobalApplication.prefs.getString("userid","0")}")
         val mRecyclerView=view.findViewById<RecyclerView>(R.id.reviewRV)
+        lateinit var imageurl : String
 
         //코인노래방 정보 입력
         conoRef.addListenerForSingleValueEvent(object: ValueEventListener {
@@ -44,7 +44,8 @@ class selecthomeitemFragment : Fragment(){
             override fun onDataChange(p0: DataSnapshot) {
                 for (snapshot in p0.children){
                     if(snapshot.key.equals("info")){
-                        Glide.with(requireContext()).load(snapshot.child("image").value.toString()).apply(RequestOptions.bitmapTransform(MultiTransformation(CenterCrop()))).into(view.cono_image)
+                        imageurl = snapshot.child("image").value.toString()
+                        Glide.with(requireContext()).load(imageurl).apply(RequestOptions.bitmapTransform(MultiTransformation(CenterCrop()))).into(view.cono_image)
                         cono_name.text = p0.key.toString()
                         cono_address.text = snapshot.child("address").value.toString()
                         cono_callnum.text = snapshot.child("tel").value.toString()
@@ -83,7 +84,9 @@ class selecthomeitemFragment : Fragment(){
 
         view.bookmark.setOnClickListener {
             if(!chk) {
-                userRef.child("bookmark/${GlobalApplication.area1}/${GlobalApplication.area2}/${GlobalApplication.area3}/${idx}").setValue("Cono/${GlobalApplication.area1}/${GlobalApplication.area2}/${GlobalApplication.area3}/${idx}")
+                userRef.child("bookmark/${GlobalApplication.area1}/${GlobalApplication.area2}/${GlobalApplication.area3}/${idx}/address").setValue("${cono_address.text}")
+                userRef.child("bookmark/${GlobalApplication.area1}/${GlobalApplication.area2}/${GlobalApplication.area3}/${idx}/image").setValue("$imageurl")
+                userRef.child("bookmark/${GlobalApplication.area1}/${GlobalApplication.area2}/${GlobalApplication.area3}/${idx}/tel").setValue("${cono_callnum.text}")
                 chk = true
                 bookmark.setImageResource(R.drawable.star2)
                 Toast.makeText(requireContext(), "즐겨찾기 목록에 추가되었습니다.", Toast.LENGTH_SHORT).show()

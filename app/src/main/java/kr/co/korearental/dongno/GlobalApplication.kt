@@ -75,6 +75,9 @@ class GlobalApplication : Application() {
         lateinit var area1 : String
         lateinit var area2 : String
         lateinit var area3 : String
+        lateinit var search_area1 : String
+        lateinit var search_area2 : String
+        lateinit var search_area3 : String
         var latitude : Double = 0.0
         var longitude : Double = 0.0
         fun getGlobalApplicationContext() : GlobalApplication? {
@@ -92,9 +95,6 @@ class GlobalApplication : Application() {
         account_profile = ""
         super.onCreate()
         instance = this
-        //------------------------------------------------------------
-        //FirebaseApp.initializeApp(this)
-        //------------------------------------------------------------
         KakaoSDK.init(KakaoSDKAdapter)
     }
 

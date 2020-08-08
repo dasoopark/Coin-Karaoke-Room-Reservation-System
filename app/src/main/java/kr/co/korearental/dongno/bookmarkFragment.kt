@@ -19,12 +19,12 @@ class bookmarkFragment  : Fragment(){
     val userRef = database.getReference("User/${GlobalApplication.prefs.getString("userid","0")}/bookmark" )
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         val view: View = inflater.inflate(R.layout.bookmarkfragment, container, false)
         val mRecyclerView=view.findViewById(R.id.bookmarkRV) as RecyclerView
         lateinit var name : String
         lateinit var address : String
         lateinit var imgUrl : String
-        lateinit var conoRef : DatabaseReference
         userRef.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
 
@@ -34,25 +34,18 @@ class bookmarkFragment  : Fragment(){
                     for (area2 in area1.children) {
                         for (area3 in area2.children) {
                             for (cono in area3.children) {
-                                conoRef=database.getReference("${cono.value.toString()}")
                                 name=cono.key.toString()
-                                conoRef.addListenerForSingleValueEvent(object: ValueEventListener{
-                                    override fun onCancelled(p1: DatabaseError) {}
-                                    override fun onDataChange(p1: DataSnapshot) {
-                                        for(snapshot in p1.children){
-                                            if(snapshot.key.equals("info")){
-                                                address=snapshot.child("address").value.toString()
-                                                imgUrl=snapshot.child("image").value.toString()
-                                                GlobalApplication.listbookmark.add(bookmark(imgUrl,name,address,3.1.toFloat()))
-                                            }
-                                        }
-                                    }
-                                })
+                                address=cono.child("address").value.toString()
+                                imgUrl=cono.child("image").value.toString()
+                                GlobalApplication.listbookmark.add(bookmark(imgUrl,name,address,3.1.toFloat(), area1.key.toString(), area2.key.toString(), area3.key.toString()))
                             }
                         }
                     }
                 }
                 mRecyclerView.layoutManager=LinearLayoutManager(requireContext())
+                for (i in GlobalApplication.listbookmark){
+                    println("${i.img}, ${i.name}, ${i.address}, ${i.rating}, ${i.area1}, ${i.area2}, ${i.area3}")
+                }
                 mRecyclerView.adapter=bookmarkAdapter(requireContext(),GlobalApplication.listbookmark)
                 mRecyclerView.setHasFixedSize(true)
             }

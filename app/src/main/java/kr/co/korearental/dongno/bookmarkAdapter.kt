@@ -17,10 +17,10 @@ import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.selecthomeitemfragment.*
 
 class bookmarkAdapter(val context : Context, val Listbookmark : ArrayList<bookmark>) :
-    RecyclerView.Adapter<bookmarkAdapter.Holder>(){
+    RecyclerView.Adapter<bookmarkAdapter.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): bookmarkAdapter.Holder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_bookmark,parent,false)
+        val view = LayoutInflater.from(context).inflate(R.layout.item_bookmark, parent,false)
         return Holder(view)
     }
 
@@ -29,12 +29,13 @@ class bookmarkAdapter(val context : Context, val Listbookmark : ArrayList<bookma
     }
 
     override fun onBindViewHolder(holder: bookmarkAdapter.Holder, position: Int) {
-
         holder.bind(Listbookmark[position],context)
         holder.itemView.setOnClickListener {
             val intent = Intent(context, selecthomeitemActivity::class.java)
-            intent.putExtra("cononame",Listbookmark.get(position).name)
-            //intent.putExtra("position",Listbookmark.get(position).index.toString())
+            intent.putExtra("cononame", Listbookmark.get(position).name)
+            GlobalApplication.search_area1 = Listbookmark.get(position).area1
+            GlobalApplication.search_area2 = Listbookmark.get(position).area2
+            GlobalApplication.search_area3 = Listbookmark.get(position).area3
             context.startActivity(intent)
         }
     }
@@ -45,10 +46,7 @@ class bookmarkAdapter(val context : Context, val Listbookmark : ArrayList<bookma
         val conoRating= itemView.findViewById<RatingBar>(R.id.rating)
 
         fun bind(bm:bookmark, context:Context){
-            Glide.with(context).load(bm.img).apply(
-                    RequestOptions.bitmapTransform(
-                    MultiTransformation(CenterCrop())
-                )).into(conoImg)
+            Glide.with(context).load(bm.img).apply(RequestOptions.bitmapTransform(MultiTransformation(CenterCrop()))).into(conoImg)
             conoName.text=bm.name
             conoAddress.text=bm.address
             conoRating.rating=bm.rating

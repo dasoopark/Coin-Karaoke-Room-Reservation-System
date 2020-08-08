@@ -16,6 +16,4 @@
         app:showAsAction="always"
         android:title="결제하기"/>
 
-
-
 </menu>
