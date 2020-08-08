@@ -67,6 +67,7 @@ class GlobalApplication : Application() {
     companion object {
         var instance: GlobalApplication? = null
         lateinit var listcono : ArrayList<Cono>
+        lateinit var listbookmark : ArrayList<bookmark>
         lateinit var prefs : PreferenceUtil
         lateinit var account_name : String
         lateinit var account_email : String

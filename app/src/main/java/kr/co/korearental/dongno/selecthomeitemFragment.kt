@@ -49,7 +49,6 @@ class selecthomeitemFragment : Fragment(){
                         cono_payinfotxt.text = snapshot.child("charge/songs/500").value.toString()+" 500원, "+snapshot.child("charge/songs/1000").value.toString()+" 1000원"
                         cono_payinfotxt2.text = "30분 "+snapshot.child("charge/time/30분").value.toString()+"원, 1시간 "+snapshot.child("charge/time/1시간").value.toString()+"원"
                     }else if(snapshot.key.equals("Review")) {
-                        //reviewtext.visibility = VISIBLE
                         for(every in snapshot.children){
                             listreview.add(infoReview(every.child("name").value.toString(),every.child("review_content").value.toString(),every.child("rating").value.toString().toFloat()))
                         }
@@ -60,15 +59,6 @@ class selecthomeitemFragment : Fragment(){
                 }
             }
         })
-
-        /*userRef.child("bookmark").addListenerForSingleValueEvent(object: ValueEventListener{
-            override fun onCancelled(p0: DatabaseError) {}
-            override fun onDataChange(p0: DataSnapshot) {
-                for(snapshot in p0.children){
-                    check = snapshot.key.equals("${idx}")
-                }
-            }
-        })*/
 
         // 즐겨찾기 표시
         view.bookmark.setOnClickListener {
