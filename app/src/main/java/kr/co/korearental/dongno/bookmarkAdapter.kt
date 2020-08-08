@@ -30,13 +30,12 @@ class bookmarkAdapter(val context : Context, val Listbookmark : ArrayList<bookma
 
     override fun onBindViewHolder(holder: bookmarkAdapter.Holder, position: Int) {
 
-        holder?.bind(Listbookmark[position],context)
+        holder.bind(Listbookmark[position],context)
         holder.itemView.setOnClickListener {
             val intent = Intent(context, selecthomeitemActivity::class.java)
             intent.putExtra("cononame",Listbookmark.get(position).name)
             //intent.putExtra("position",Listbookmark.get(position).index.toString())
             context.startActivity(intent)
-            //Toast.makeText(context,"Clicked: ${ListCono.get(position).name}", Toast.LENGTH_SHORT).show()
         }
     }
     inner class Holder(itemView: View): RecyclerView.ViewHolder(itemView){

@@ -86,6 +86,7 @@ class GlobalApplication : Application() {
     override fun onCreate() {
         prefs=PreferenceUtil(applicationContext)
         listcono = arrayListOf()
+        listbookmark=arrayListOf()
         account_name = ""
         account_email = ""
         account_profile = ""
