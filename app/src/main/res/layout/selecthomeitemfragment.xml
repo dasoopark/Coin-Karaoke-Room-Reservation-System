@@ -125,7 +125,21 @@
             app:layout_constraintRight_toLeftOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/cono_image"
             app:layout_constraintLeft_toRightOf="@+id/cono_name"
-            app:layout_constraintHorizontal_bias="1.0"             />
+            app:layout_constraintHorizontal_bias="1.0" />
+
+        <ImageButton
+            android:id="@+id/nmap"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/login_form_details"
+            android:focusableInTouchMode="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_map"
+            app:layout_constraintRight_toLeftOf="@+id/bookmark"
+            app:layout_constraintTop_toBottomOf="@+id/cono_image"
+            app:layout_constraintLeft_toRightOf="@+id/cono_name"
+            app:layout_constraintHorizontal_bias="1.0"/>
 
         <View
             android:id="@+id/line1"

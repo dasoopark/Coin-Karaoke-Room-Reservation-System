@@ -1,14 +1,13 @@
 package kr.co.korearental.dongno
 
-import android.graphics.BitmapFactory
-import android.graphics.Color
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.content.pm.ResolveInfo
+import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.VISIBLE
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,7 +20,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.storage.FirebaseStorage
+import kotlinx.android.synthetic.main.item_cono.*
 import kotlinx.android.synthetic.main.selecthomeitemfragment.*
 import kotlinx.android.synthetic.main.selecthomeitemfragment.view.*
 
@@ -37,6 +36,7 @@ class selecthomeitemFragment : Fragment(){
         val userRef = database.getReference("User/${GlobalApplication.prefs.getString("userid","0")}")
         val mRecyclerView=view.findViewById<RecyclerView>(R.id.reviewRV)
         lateinit var imageurl : String
+        var rating_avg : String = "0.0"
 
         //코인노래방 정보 입력
         conoRef.addListenerForSingleValueEvent(object: ValueEventListener {
@@ -52,9 +52,23 @@ class selecthomeitemFragment : Fragment(){
                         cono_payinfotxt.text = snapshot.child("charge/songs/500").value.toString()+" 500원, "+snapshot.child("charge/songs/1000").value.toString()+" 1000원"
                         cono_payinfotxt2.text = "30분 "+snapshot.child("charge/time/30분").value.toString()+"원, 1시간 "+snapshot.child("charge/time/1시간").value.toString()+"원"
                     }else if(snapshot.key.equals("Review")) {
-                        reviewtext.text = "리뷰 > (${snapshot.childrenCount})"
+                        reviewtext.text = "리뷰 > (${snapshot.childrenCount-2})"
                         for(every in snapshot.children){
-                            listreview.add(infoReview(every.child("name").value.toString(),every.child("review_content").value.toString(),every.child("rating").value.toString().toFloat()))
+                            if(every.key.equals("rating_avg")){
+                                rating_avg = every.value.toString()
+                                if(rating_avg == "null"){
+                                    rating_avg = "0.0"
+                                }
+                            }else if(every.key.equals("index")){
+                                continue
+                            }else {
+                                listreview.add(infoReview(
+                                        every.child("name").value.toString(),
+                                        every.child("review_content").value.toString(),
+                                        every.child("rating").value.toString().toFloat()
+                                    )
+                                )
+                            }
                         }
                         mRecyclerView.layoutManager=LinearLayoutManager(requireContext())
                         mRecyclerView.adapter=infoReviewAdapter(requireContext(),listreview)
@@ -73,6 +87,7 @@ class selecthomeitemFragment : Fragment(){
                             for(name in area3.children){
                                 if (area1.key.equals(GlobalApplication.area1) && area2.key.equals(GlobalApplication.area2) && area3.key.equals(GlobalApplication.area3) && name.key.equals(idx)) {
                                     chk = true
+                                    userRef.child("bookmark/${area1.key.toString()}/${area2.key.toString()}/${area3.key.toString()}/${name.key.toString()}/rating_avg").setValue("$rating_avg")
                                     bookmark.setImageResource(R.drawable.star2)
                                 }
                             }
@@ -87,6 +102,7 @@ class selecthomeitemFragment : Fragment(){
                 userRef.child("bookmark/${GlobalApplication.area1}/${GlobalApplication.area2}/${GlobalApplication.area3}/${idx}/address").setValue("${cono_address.text}")
                 userRef.child("bookmark/${GlobalApplication.area1}/${GlobalApplication.area2}/${GlobalApplication.area3}/${idx}/image").setValue("$imageurl")
                 userRef.child("bookmark/${GlobalApplication.area1}/${GlobalApplication.area2}/${GlobalApplication.area3}/${idx}/tel").setValue("${cono_callnum.text}")
+                userRef.child("bookmark/${GlobalApplication.area1}/${GlobalApplication.area2}/${GlobalApplication.area3}/${idx}/rating_avg").setValue("$rating_avg")
                 chk = true
                 bookmark.setImageResource(R.drawable.star2)
                 Toast.makeText(requireContext(), "즐겨찾기 목록에 추가되었습니다.", Toast.LENGTH_SHORT).show()
@@ -98,7 +114,20 @@ class selecthomeitemFragment : Fragment(){
             }
         }
 
+        view.nmap.setOnClickListener {
+            val url ="nmap://route/walk?dlat=${activity?.intent?.getDoubleExtra("x", 0.0).toString()}&dlng=${activity?.intent?.getDoubleExtra("y", 0.0)}&dname=$idx&appname=kr.co.korearental.dongno"
+            println(url)
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            intent.addCategory(Intent.CATEGORY_BROWSABLE)
+            val list: List<ResolveInfo> =
+                requireContext().packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
+            if (list.isEmpty()) {
+                requireContext().startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.nhn.android.nmap")))
+            } else {
+                requireContext().startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+            }
+        }
+
         return view
     }
-
 }

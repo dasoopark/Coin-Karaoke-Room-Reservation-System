@@ -22,9 +22,6 @@ class bookmarkFragment  : Fragment(){
 
         val view: View = inflater.inflate(R.layout.bookmarkfragment, container, false)
         val mRecyclerView=view.findViewById(R.id.bookmarkRV) as RecyclerView
-        lateinit var name : String
-        lateinit var address : String
-        lateinit var imgUrl : String
         userRef.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
 
@@ -34,18 +31,19 @@ class bookmarkFragment  : Fragment(){
                     for (area2 in area1.children) {
                         for (area3 in area2.children) {
                             for (cono in area3.children) {
-                                name=cono.key.toString()
-                                address=cono.child("address").value.toString()
-                                imgUrl=cono.child("image").value.toString()
-                                GlobalApplication.listbookmark.add(bookmark(imgUrl,name,address,3.1.toFloat(), area1.key.toString(), area2.key.toString(), area3.key.toString()))
+                                val name=cono.key.toString()
+                                val address=cono.child("address").value.toString()
+                                val imgUrl=cono.child("image").value.toString()
+                                var rating=cono.child("rating_avg").value.toString()
+                                if(rating == "null"){
+                                    rating = "0.0"
+                                }
+                                GlobalApplication.listbookmark.add(bookmark(imgUrl,name,address,rating.toFloat(), area1.key.toString(), area2.key.toString(), area3.key.toString()))
                             }
                         }
                     }
                 }
                 mRecyclerView.layoutManager=LinearLayoutManager(requireContext())
-                for (i in GlobalApplication.listbookmark){
-                    println("${i.img}, ${i.name}, ${i.address}, ${i.rating}, ${i.area1}, ${i.area2}, ${i.area3}")
-                }
                 mRecyclerView.adapter=bookmarkAdapter(requireContext(),GlobalApplication.listbookmark)
                 mRecyclerView.setHasFixedSize(true)
             }

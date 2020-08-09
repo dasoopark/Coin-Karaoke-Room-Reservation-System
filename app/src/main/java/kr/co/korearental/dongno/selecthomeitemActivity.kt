@@ -46,16 +46,34 @@ class selecthomeitemActivity : AppCompatActivity(){
                             val item_cononame=intent.getStringExtra("cononame")
                             val userRef=database.getReference("User/${userid}/Review/${item_cononame}")
                             val conoRef=database.getReference("Cono/${GlobalApplication.area1}/${GlobalApplication.area2}/" +
-                                    "${GlobalApplication.area3}/${intent.getStringExtra("cononame")}/Review/${userid}")
+                                    "${GlobalApplication.area3}/${intent.getStringExtra("cononame")}/Review")
                             //유저 DB에 삽입
                             userRef.child("content").setValue(dialogView.reviewContent.text.toString())
                             userRef.child("rating").setValue(dialogView.ratingBar.rating)
                             userRef.child("Time").setValue(now)
                             //코노 DB에 삽입
-                            conoRef.child("name").setValue(GlobalApplication.prefs.getString("username","Anonymous"))
-                            conoRef.child("review_content").setValue(dialogView.reviewContent.text.toString())
-                            conoRef.child("rating").setValue(dialogView.ratingBar.rating)
-                            conoRef.child("Time").setValue(now)
+                            conoRef.addListenerForSingleValueEvent(object : ValueEventListener{
+                                override fun onCancelled(error: DatabaseError) {}
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    var index = 0
+                                    var avg : Double = 0.0
+                                    if (snapshot.childrenCount.toInt() != 0){
+                                        index = snapshot.child("index").value.toString().toInt()+1
+                                        avg = snapshot.child("rating_avg").value.toString().toDouble()
+                                    }else{
+                                        //index가 0인 경우
+                                        index = 1
+                                    }
+                                    avg = (avg*(index-1) + dialogView.ratingBar.rating)/(index)
+                                    conoRef.child("rating_avg").setValue(avg)
+                                    conoRef.child("index").setValue(index)
+                                    conoRef.child("${index}/userid").setValue(userid)
+                                    conoRef.child("${index}/name").setValue(GlobalApplication.prefs.getString("username","Anonymous"))
+                                    conoRef.child("${index}/review_content").setValue(dialogView.reviewContent.text.toString())
+                                    conoRef.child("${index}/rating").setValue(dialogView.ratingBar.rating)
+                                    conoRef.child("${index}/Time").setValue(now)
+                                }
+                            })
                         }
                     }
                     .setNegativeButton("취소") { dialogInterface, i ->

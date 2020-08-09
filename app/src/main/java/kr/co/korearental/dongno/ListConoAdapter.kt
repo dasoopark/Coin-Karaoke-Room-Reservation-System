@@ -38,7 +38,9 @@ class ListConoAdapter(val context : Context, val ListCono: ArrayList<Cono> ) :
         holder.bind(ListCono[position],context)
         holder.itemView.setOnClickListener {
             val intent = Intent(context, selecthomeitemActivity::class.java)
-            intent.putExtra("cononame", ListCono.get(position).name)
+            intent.putExtra("cononame", ListCono[position].name)
+            intent.putExtra("x", ListCono[position].x)
+            intent.putExtra("y", ListCono[position].y)
             context.startActivity(intent)
         }
     }
