@@ -78,6 +78,7 @@ class GlobalApplication : Application() {
         lateinit var search_area1 : String
         lateinit var search_area2 : String
         lateinit var search_area3 : String
+        lateinit var search_cono : String
         var latitude : Double = 0.0
         var longitude : Double = 0.0
         fun getGlobalApplicationContext() : GlobalApplication? {

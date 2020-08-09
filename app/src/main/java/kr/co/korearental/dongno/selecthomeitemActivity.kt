@@ -85,7 +85,7 @@ class selecthomeitemActivity : AppCompatActivity(){
             }
 
             R.id.paymenttab -> {
-                val intent = Intent(this, paymentActivity::class.java)
+                val intent = Intent(this,paymentActivity::class.java)
                 startActivity(intent)
             }
         }
