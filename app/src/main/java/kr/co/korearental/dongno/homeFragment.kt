@@ -64,7 +64,9 @@ open class homeFragment : Fragment() {
                     name=snapshot.key.toString()
                     address=snapshot.child("info/address").value.toString()
                     imgUrl=snapshot.child("info/image").value.toString()
-                    GlobalApplication.listcono.add(Cono(imgUrl,name,address,3.1.toFloat()))
+                    val x=snapshot.child("info/x").value.toString()
+                    val y=snapshot.child("info/y").value.toString()
+                    GlobalApplication.listcono.add(Cono(imgUrl,name,address,3.1.toFloat(), x.toDouble(), y.toDouble()))
                 }
                 mRecyclerView.layoutManager=LinearLayoutManager(requireContext())
                 mRecyclerView.adapter=ListConoAdapter(requireContext(), GlobalApplication.listcono)
