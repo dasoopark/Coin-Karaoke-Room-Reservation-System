@@ -26,46 +26,10 @@ import kotlinx.android.synthetic.main.payment_time.view.*
 
 class payment_timeFragment : Fragment() {
 
-    val database = FirebaseDatabase.getInstance()
-    val userRef =
-        database.getReference("User/${GlobalApplication.prefs.getString("userid", "")}/payment")
-    val conoRef =
-        database.getReference("Cono/${GlobalApplication.search_area1}/${GlobalApplication.search_area2}/${GlobalApplication.search_area3}/${GlobalApplication.search_cono}/payment")
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+   
+    override fun onCreateView( inflater: LayoutInflater,  container: ViewGroup?,  savedInstanceState: Bundle? ): View? {
         val view = inflater.inflate(R.layout.payment_time, container, false)
-        var cono_pay_count: Long = 0
-        var user_pay_count: Long = 0
-        view.time_payButton.setOnClickListener {
-            userRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {}
-                override fun onDataChange(p0: DataSnapshot) {
-                    for (snapshot in p0.children)
-                        user_pay_count = snapshot.childrenCount
-                }
-            })
-            conoRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {}
-                override fun onDataChange(p0: DataSnapshot) {
-                    for (snapshot in p0.children)
-                        cono_pay_count = snapshot.childrenCount
-                }
-            })
-            user_pay_count++
-            cono_pay_count++
-            userRef.child("${user_pay_count}/cononame").setValue("${GlobalApplication.search_cono}")
-            //userRef.child("${user_pay_count}/reserveTime").setValue("")     -> 예약 시간 저장
-            //conoRef.child("${cono_pay_count}/reserveTime").setValue("")     -> 예약 시간 저장
 
-            //userRef.child("${user_pay_count}/roomNum").setValue("")     -> 방 번호
-            //conoRef.child("${cono_pay_count}/roomNum").setValue("")     -> 방 번호
-
-            //userRef.child("${user_pay_count}/totalPay").setValue("")     -> 결제 금액
-            //conoRef.child("${cono_pay_count}/totalPay").setValue("")     -> 결제 금액
 
             view.room_choiceButton_fortime.setOnClickListener {
                 val builder = AlertDialog.Builder(requireContext())
@@ -100,8 +64,7 @@ class payment_timeFragment : Fragment() {
                     .show()
             }
 
-        }
-            return view
+        return view
     }
 
 }
