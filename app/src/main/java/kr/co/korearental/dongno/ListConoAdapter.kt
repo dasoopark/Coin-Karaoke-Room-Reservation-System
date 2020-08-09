@@ -22,11 +22,11 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.mypagefragment.view.*
 
-class ListConoAdapter(val context: Context, val ListCono: ArrayList<Cono> ) :
+class ListConoAdapter(val context : Context, val ListCono: ArrayList<Cono> ) :
     RecyclerView.Adapter<ListConoAdapter.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListConoAdapter.Holder {
-        val view = LayoutInflater.from(context).inflate(R.layout.item_cono, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.item_cono, parent,false)
         return Holder(view)
     }
 
@@ -35,14 +35,11 @@ class ListConoAdapter(val context: Context, val ListCono: ArrayList<Cono> ) :
     }
 
     override fun onBindViewHolder(holder: ListConoAdapter.Holder, position: Int) {
-
         holder.bind(ListCono[position],context)
         holder.itemView.setOnClickListener {
             val intent = Intent(context, selecthomeitemActivity::class.java)
-            intent.putExtra("cononame",ListCono.get(position).name)
-            intent.putExtra("position",ListCono.get(position).index.toString())
+            intent.putExtra("cononame", ListCono.get(position).name)
             context.startActivity(intent)
-            //Toast.makeText(context,"Clicked: ${ListCono.get(position).name}", Toast.LENGTH_SHORT).show()
         }
     }
     inner class Holder(itemView: View): RecyclerView.ViewHolder(itemView){

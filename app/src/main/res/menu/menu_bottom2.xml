@@ -16,6 +16,4 @@
         app:showAsAction="always"
         android:title="예약하기"/>
 
-
-
 </menu>

@@ -67,6 +67,7 @@ class GlobalApplication : Application() {
     companion object {
         var instance: GlobalApplication? = null
         lateinit var listcono : ArrayList<Cono>
+        lateinit var listbookmark : ArrayList<bookmark>
         lateinit var prefs : PreferenceUtil
         lateinit var account_name : String
         lateinit var account_email : String
@@ -74,6 +75,9 @@ class GlobalApplication : Application() {
         lateinit var area1 : String
         lateinit var area2 : String
         lateinit var area3 : String
+        lateinit var search_area1 : String
+        lateinit var search_area2 : String
+        lateinit var search_area3 : String
         var latitude : Double = 0.0
         var longitude : Double = 0.0
         fun getGlobalApplicationContext() : GlobalApplication? {
@@ -85,14 +89,12 @@ class GlobalApplication : Application() {
     override fun onCreate() {
         prefs=PreferenceUtil(applicationContext)
         listcono = arrayListOf()
+        listbookmark=arrayListOf()
         account_name = ""
         account_email = ""
         account_profile = ""
         super.onCreate()
         instance = this
-        //------------------------------------------------------------
-        //FirebaseApp.initializeApp(this)
-        //------------------------------------------------------------
         KakaoSDK.init(KakaoSDKAdapter)
     }
 

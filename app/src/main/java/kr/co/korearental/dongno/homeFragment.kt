@@ -38,10 +38,7 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 
-
 open class homeFragment : Fragment() {
-
-    private val LOCATION_PERMISSION_REQUEST_CODE = 1000
 
     val database = FirebaseDatabase.getInstance()
     val conoRef = database.getReference("Cono/${GlobalApplication.area1}/${GlobalApplication.area2}/${GlobalApplication.area3}")
@@ -53,7 +50,10 @@ open class homeFragment : Fragment() {
         lateinit var name : String
         lateinit var address : String
         lateinit var imgUrl : String
-        var index : Int=0
+        // 지도로 특정 위치를 불러왔을 때의 경우로 코드 수정 필요
+        GlobalApplication.search_area1 = GlobalApplication.area1
+        GlobalApplication.search_area2 = GlobalApplication.area2
+        GlobalApplication.search_area3 = GlobalApplication.area3
 
         conoRef.addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {}
@@ -64,8 +64,7 @@ open class homeFragment : Fragment() {
                     name=snapshot.key.toString()
                     address=snapshot.child("info/address").value.toString()
                     imgUrl=snapshot.child("info/image").value.toString()
-                    index++ //임시 키
-                    GlobalApplication.listcono.add(Cono(index,imgUrl,name,address,3.1.toFloat()))
+                    GlobalApplication.listcono.add(Cono(imgUrl,name,address,3.1.toFloat()))
                 }
                 mRecyclerView.layoutManager=LinearLayoutManager(requireContext())
                 mRecyclerView.adapter=ListConoAdapter(requireContext(), GlobalApplication.listcono)

@@ -45,7 +45,7 @@
                     android:buttonTint="@color/bg_login_button"
                     android:fontFamily="@font/gotham"
                     android:text="30분 "
-                    android:textSize="17dp" />
+                    android:textSize="16dp" />
 
                 <RadioButton
                     android:id="@+id/hour_timebutton"
@@ -54,7 +54,7 @@
                     android:buttonTint="@color/bg_login_button"
                     android:fontFamily="@font/gotham"
                     android:text="1시간 "
-                    android:textSize="17dp" />
+                    android:textSize="16dp" />
 
                 <RadioButton
                     android:id="@+id/hourthiry_timebutton"
@@ -63,7 +63,7 @@
                     android:buttonTint="@color/bg_login_button"
                     android:fontFamily="@font/gotham"
                     android:text="1시간 30분 "
-                    android:textSize="17dp" />
+                    android:textSize="16dp" />
 
                 <RadioButton
                     android:id="@+id/twhour_button"

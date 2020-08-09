@@ -45,7 +45,8 @@ class selecthomeitemActivity : AppCompatActivity(){
                             val now = SimpleDateFormat("yyyy/MM/dd HH:mm:ss",Locale.KOREA).format(Calendar.getInstance().time)
                             val item_cononame=intent.getStringExtra("cononame")
                             val userRef=database.getReference("User/${userid}/Review/${item_cononame}")
-                            val conoRef=database.getReference("Cono/${intent.getStringExtra("position")}/Review/${userid}")
+                            val conoRef=database.getReference("Cono/${GlobalApplication.area1}/${GlobalApplication.area2}/" +
+                                    "${GlobalApplication.area3}/${intent.getStringExtra("cononame")}/Review/${userid}")
                             //유저 DB에 삽입
                             userRef.child("content").setValue(dialogView.reviewContent.text.toString())
                             userRef.child("rating").setValue(dialogView.ratingBar.rating)

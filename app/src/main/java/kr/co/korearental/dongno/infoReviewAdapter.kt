@@ -8,6 +8,7 @@ import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.FirebaseDatabase
+import kotlinx.android.synthetic.main.selecthomeitemfragment.*
 
 class infoReviewAdapter(val context : Context, val ListReview : ArrayList<infoReview>) :
     RecyclerView.Adapter<infoReviewAdapter.Holder>(){
@@ -31,7 +32,8 @@ class infoReviewAdapter(val context : Context, val ListReview : ArrayList<infoRe
         val content = itemView?.findViewById<TextView>(R.id.txtcontent)
 
         fun bind(review : infoReview, context : Context){
-            conoName?.text=review.name
+            val tmp_name=review.name
+            conoName?.text=tmp_name.substring(0,1)+"*"+ tmp_name.substring(2,3)
             rating?.rating=review.rating
             content?.text=review.content
         }
