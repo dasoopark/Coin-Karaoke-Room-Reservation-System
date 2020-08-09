@@ -39,6 +39,7 @@ class ListConoAdapter(val context : Context, val ListCono: ArrayList<Cono> ) :
         holder.itemView.setOnClickListener {
             val intent = Intent(context, selecthomeitemActivity::class.java)
             intent.putExtra("cononame", ListCono.get(position).name)
+            GlobalApplication.search_cono=ListCono.get(position).name
             context.startActivity(intent)
         }
     }
