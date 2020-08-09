@@ -75,17 +75,6 @@ class MapSearch: AppCompatActivity(), OnMapReadyCallback {
             }
         }
         infoWindow.setOnClickListener {
-            /*
-            val url ="nmap://route/walk?dlat=${infoWindow.marker!!.position.latitude}&dlng=${infoWindow.marker!!.position.longitude}&dname=${infoWindow.marker!!.tag}&appname=kr.co.korearental.dongno"
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            intent.addCategory(Intent.CATEGORY_BROWSABLE)
-            val list =packageManager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY)
-            if (list == null || list.isEmpty()) {
-                applicationContext.startActivity(Intent(Intent.ACTION_VIEW,Uri.parse("market://details?id=com.nhn.android.nmap")))
-            } else {
-                applicationContext.startActivity(intent.addFlags(FLAG_ACTIVITY_NEW_TASK))
-            }
-             */
             val intent = Intent(this, selecthomeitemActivity::class.java)
             intent.putExtra("cononame",infoWindow.marker!!.tag.toString())
             this.startActivity(intent)

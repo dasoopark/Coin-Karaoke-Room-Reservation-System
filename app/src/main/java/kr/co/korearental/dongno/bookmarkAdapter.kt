@@ -32,10 +32,10 @@ class bookmarkAdapter(val context : Context, val Listbookmark : ArrayList<bookma
         holder.bind(Listbookmark[position],context)
         holder.itemView.setOnClickListener {
             val intent = Intent(context, selecthomeitemActivity::class.java)
-            intent.putExtra("cononame", Listbookmark.get(position).name)
-            GlobalApplication.search_area1 = Listbookmark.get(position).area1
-            GlobalApplication.search_area2 = Listbookmark.get(position).area2
-            GlobalApplication.search_area3 = Listbookmark.get(position).area3
+            intent.putExtra("cononame", Listbookmark[position].name)
+            GlobalApplication.search_area1 = Listbookmark[position].area1
+            GlobalApplication.search_area2 = Listbookmark[position].area2
+            GlobalApplication.search_area3 = Listbookmark[position].area3
             context.startActivity(intent)
         }
     }

@@ -47,13 +47,11 @@ open class homeFragment : Fragment() {
 
         val view: View = inflater.inflate(R.layout.homefragment, container, false)
         val mRecyclerView=view.findViewById(R.id.conoRV) as RecyclerView
-        lateinit var name : String
-        lateinit var address : String
-        lateinit var imgUrl : String
         // 지도로 특정 위치를 불러왔을 때의 경우로 코드 수정 필요
         GlobalApplication.search_area1 = GlobalApplication.area1
         GlobalApplication.search_area2 = GlobalApplication.area2
         GlobalApplication.search_area3 = GlobalApplication.area3
+        view.homefrag_addresstxt.text = "${GlobalApplication.search_area1} ${GlobalApplication.search_area2} ${GlobalApplication.search_area3}"
 
         conoRef.addListenerForSingleValueEvent(object:ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {}
@@ -61,12 +59,16 @@ open class homeFragment : Fragment() {
             override fun onDataChange(p0: DataSnapshot) {
                 GlobalApplication.listcono.clear()
                 for (snapshot in p0.children){
-                    name=snapshot.key.toString()
-                    address=snapshot.child("info/address").value.toString()
-                    imgUrl=snapshot.child("info/image").value.toString()
+                    val name=snapshot.key.toString()
+                    val address=snapshot.child("info/address").value.toString()
+                    val imgUrl=snapshot.child("info/image").value.toString()
                     val x=snapshot.child("info/x").value.toString()
                     val y=snapshot.child("info/y").value.toString()
-                    GlobalApplication.listcono.add(Cono(imgUrl,name,address,3.1.toFloat(), x.toDouble(), y.toDouble()))
+                    var rating=snapshot.child("Review/rating_avg").value.toString()
+                    if(rating == "null"){
+                        rating = "0.0"
+                    }
+                    GlobalApplication.listcono.add(Cono(imgUrl, name, address, rating.toFloat(), x.toDouble(), y.toDouble()))
                 }
                 mRecyclerView.layoutManager=LinearLayoutManager(requireContext())
                 mRecyclerView.adapter=ListConoAdapter(requireContext(), GlobalApplication.listcono)
