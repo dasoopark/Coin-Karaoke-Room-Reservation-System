@@ -74,7 +74,7 @@ open class homeFragment : Fragment() {
             }
         })
 
-        view.searchButton.setOnClickListener {
+        view.searchmap.setOnClickListener {
             val intent = Intent(this.activity, MapSearch::class.java)
             startActivity(intent)
         }
