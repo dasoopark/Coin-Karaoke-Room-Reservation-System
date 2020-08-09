@@ -164,7 +164,7 @@
             android:padding="20dp">
 
             <Button
-                android:id="@+id/room_choiceButton"
+                android:id="@+id/room_choiceButton_fortime"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/rounded_button"

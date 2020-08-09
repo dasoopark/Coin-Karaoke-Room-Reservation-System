@@ -24,14 +24,15 @@ import java.util.*
 class payment_songFragment: Fragment() {
 
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
     val database = FirebaseDatabase.getInstance()
     val userRef = database.getReference("User/${GlobalApplication.prefs.getString("userid","")}/payment")
     val conoRef = database.getReference("Cono/${GlobalApplication.search_area1}/${GlobalApplication.search_area2}/${GlobalApplication.search_area3}/${GlobalApplication.search_cono}/payment")
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,  savedInstanceState: Bundle? ): View? {
+
+     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,  savedInstanceState: Bundle? ): View? {
         val view = inflater.inflate(R.layout.payment_song, container, false)
         var cono_pay_count : Long = 0
         var user_pay_count : Long = 0
+
         view.song_payButton.setOnClickListener{
             userRef.addListenerForSingleValueEvent(object:ValueEventListener{
                 override fun onCancelled(p0: DatabaseError) {}
