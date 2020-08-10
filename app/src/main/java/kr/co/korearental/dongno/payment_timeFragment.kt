@@ -11,7 +11,6 @@ import com.mohamedabulgasem.datetimepicker.DateTimePicker
 import kotlinx.android.synthetic.main.payment_song.*
 import kotlinx.android.synthetic.main.payment_song.view.*
 import kotlinx.android.synthetic.main.payment_song.view.reservation_time
-import kotlinx.android.synthetic.main.payment_song.view.room_choiceButton
 import kotlinx.android.synthetic.main.payment_time.*
 import kotlinx.android.synthetic.main.payment_time.view.*
 import kotlinx.android.synthetic.main.payment_time.view.reservation_time_fortime
@@ -29,20 +28,6 @@ class payment_timeFragment : Fragment() {
    
     override fun onCreateView( inflater: LayoutInflater,  container: ViewGroup?,  savedInstanceState: Bundle? ): View? {
         val view = inflater.inflate(R.layout.payment_time, container, false)
-
-
-            view.room_choiceButton_fortime.setOnClickListener {
-                val builder = AlertDialog.Builder(requireContext())
-                val dialogView = layoutInflater.inflate(R.layout.roomchoice_dialog, null)
-                builder.setView(dialogView)
-                    .setPositiveButton("예약") { dialogInterface, i ->
-
-                    }
-                    .setNegativeButton("취소") { dialogInterface, i ->
-                    }
-                    .show()
-                // Dialog 사이즈 조절 하기
-            }
 
             view.time_choiceButton_fortime.setOnClickListener {
                 val cal = Calendar.getInstance()
@@ -63,7 +48,6 @@ class payment_timeFragment : Fragment() {
                     .build()
                     .show()
             }
-
         return view
     }
 

@@ -31,27 +31,31 @@ import java.util.*
 
 
 class payment_songFragment: Fragment() {
-
+    var guide_1 = 0
+    var guide_2 = 0
      @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
      @SuppressLint("RestrictedApi")
      override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
          val view = inflater.inflate(R.layout.payment_song, container, false)
 
+         val database = FirebaseDatabase.getInstance()
+         val userRef = database.getReference("User/${GlobalApplication.prefs.getString("userid","")}/payment")
+         val conoRef = database.getReference("Cono/${GlobalApplication.search_area1}/${GlobalApplication.search_area2}/${GlobalApplication.search_area3}/${GlobalApplication.search_cono}")
 
-         //방 선택하기
-         view.room_choiceButton.setOnClickListener{
-            val builder = AlertDialog.Builder(requireContext())
-            val dialogView = layoutInflater.inflate(R.layout.roomchoice_dialog, null)
-            builder.setView(dialogView)
-                .setPositiveButton("예약") { dialogInterface, i ->
-
-                }
-                .setNegativeButton("취소") { dialogInterface, i ->
-                }
-                .show()
-            // Dialog 사이즈 조절 하기
-        }
-
+         conoRef.child("info/charge/songs").addListenerForSingleValueEvent(object : ValueEventListener{
+             override fun onCancelled(p0: DatabaseError) {}
+             override fun onDataChange(p0: DataSnapshot) {
+                 var songs500 = p0.child("500").value.toString()
+                 guide_1 = songs500.substring(0, 1).toInt()
+                 var songs1000 = p0.child("1000").value.toString()
+                 guide_2 = songs1000.substring(0, 1).toInt()
+                 view.song_radiobutton1.text = "${guide_1}곡"
+                 view.song_radiobutton2.text = "${guide_2}곡"
+                 view.song_radiobutton3.text = "${guide_2*2}곡"
+                 view.song_radiobutton4.text = "${guide_2*3}곡"
+                 view.song_radiobutton5.text = "${guide_2*4}곡"
+             }
+         })
 
         // 예약 시간 선택
         view.time_choiceButton.setOnClickListener{
@@ -68,6 +72,7 @@ class payment_songFragment: Fragment() {
 
                    // 변수 => year, month, dayofmonth, hoursOfDay, minute 으로 쓰면됨
                     reservation_time.text = SimpleDateFormat("YY년 MM월 dd일 HH시 mm분").format(cal.time)
+
                 }
                 .build()
                 .show()
