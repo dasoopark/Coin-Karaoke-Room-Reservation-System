@@ -141,7 +141,7 @@
                 app:layout_constraintEnd_toEndOf="@+id/select_song"
                 app:layout_constraintHorizontal_bias="0.943"
                 app:layout_constraintStart_toStartOf="@+id/select_song"
-                app:layout_constraintTop_toTopOf="@+id/searchEditText"
+                app:layout_constraintTop_toTopOf="@+id/select_song"
                 app:layout_constraintVertical_bias="0.75"
                 app:srcCompat="@drawable/ic_downarrow" />
 

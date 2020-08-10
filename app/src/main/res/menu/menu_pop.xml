@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_collect"
+        android:checkable="true"
+        android:title="바보" />
+
+    <item
+        android:id="@+id/menu_more"
+        android:title="다수" />
+
+    <item
+        android:id="@+id/menu_del"
+        android:title="병신" />
+
+    <item
+        android:id="@+id/menu_more2"
+        android:title="사슴" />
+
+    <item
+        android:orderInCategory="2"
+        android:title="호구" />
+</menu>
