@@ -86,7 +86,7 @@ class selecthomeitemActivity : AppCompatActivity(){
 
             R.id.paymenttab -> {
                 val intent2 = Intent(this, paymentActivity::class.java)
-                intent2.putExtra("cononame","${intent.getStringExtra("cononame")}")
+                GlobalApplication.search_cono = intent.getStringExtra("cononame")
                 startActivity(intent2)
             }
         }

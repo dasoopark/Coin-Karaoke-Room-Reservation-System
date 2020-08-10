@@ -62,7 +62,7 @@ class selecthomeitemFragment : Fragment(){
                             }else if(every.key.equals("index")){
                                 continue
                             }else {
-                                listreview.add(infoReview(
+                                listreview.add(0, infoReview(
                                         every.child("name").value.toString(),
                                         every.child("review_content").value.toString(),
                                         every.child("rating").value.toString().toFloat()
