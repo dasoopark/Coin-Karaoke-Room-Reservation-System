@@ -124,7 +124,7 @@
                     android:textSize="16dp" />
 
                 <RadioButton
-                    android:id="@+id/hourthiry_timebutton"
+                    android:id="@+id/hourthirty_timebutton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:buttonTint="@color/bg_login_button"
