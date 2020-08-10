@@ -61,6 +61,7 @@ class mypageFragment : Fragment(){
             })
         }
 
+
         view.member_delete.setOnClickListener {
             val alertDialog = AlertDialog.Builder(requireContext()).setTitle("연결 끊기").setMessage("탈퇴하시겠습니까?")
             alertDialog.setPositiveButton("네") { dialog: DialogInterface?, which: Int ->
