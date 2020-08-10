@@ -8,81 +8,142 @@
 
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView11"
+        android:id="@+id/cardView19"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="130dp"
-        android:layout_marginEnd="1dp"
+        android:layout_marginTop="192dp"
         app:cardCornerRadius="4dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="30dp">
+            android:padding="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/cardView11"
+            app:layout_constraintTop_toBottomOf="@+id/cardView19"
+            app:layout_constraintVertical_bias="0.953"
+            tools:layout_editor_absoluteX="-1dp">
 
-            <RadioGroup
-                android:id="@+id/quantity_radiogroup"
+
+            <Button
+                android:id="@+id/time_choiceButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/rounded_button"
+                android:text="예약 시간 선택"
+                android:textColor="#FFFFFF"
+                android:textSize="18dp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_editor_absoluteX="33dp" />
+
+            <TextView
+                android:id="@+id/reservation_timetxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="150dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="165dp"
-                android:orientation="horizontal"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/gotham"
+                android:text="예약 시간:"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/time_choiceButton" />
+
+            <TextView
+                android:id="@+id/reservation_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="77dp"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/gotham"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/time_choiceButton" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView11"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="296dp"
+        app:cardCornerRadius="4dp"
+        app:cardUseCompatPadding="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/cono_billtxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:layout_marginEnd="328dp"
+                android:fontFamily="@font/gotham"
+                android:text="몇 곡에:"
+                android:textSize="17sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <RadioButton
-                    android:id="@+id/three_song"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/bg_login_button"
-                    android:fontFamily="@font/gotham"
-                    android:text="3곡 "
-                    android:textSize="17dp" />
+            <TextView
+                android:id="@+id/cono_bill"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:fontFamily="@font/gotham"
+                android:text="500원"
+                app:layout_constraintStart_toEndOf="@+id/cono_billtxt"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <RadioButton
-                    android:id="@+id/five_song"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/bg_login_button"
-                    android:fontFamily="@font/gotham"
-                    android:text="5곡 "
-                    android:textSize="17dp" />
+            <EditText
+                android:id="@+id/select_song"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:layout_marginStart="110dp"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/rounded_edittext"
+                android:hint="곡 수를 선택하세요"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                android:paddingLeft="10dp"
+                android:singleLine="true"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <RadioButton
-                    android:id="@+id/ten_song"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/bg_login_button"
-                    android:fontFamily="@font/gotham"
-                    android:text="10곡 "
-                    android:textSize="17dp" />
-
-                <RadioButton
-                    android:id="@+id/fiftenn_song"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/bg_login_button"
-                    android:fontFamily="@font/gotham"
-                    android:text="15곡 "
-                    android:textSize="17dp" />
-
-                <RadioButton
-                    android:id="@+id/two_song"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:buttonTint="@color/bg_login_button"
-                    android:fontFamily="@font/gotham"
-                    android:text="20곡 "
-                    android:textSize="17dp" />
-            </RadioGroup>
+            <ImageButton
+                android:id="@+id/imageButton_downarrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:background="@drawable/ic_downarrow"
+                android:focusableInTouchMode="true"
+                app:layout_constraintBottom_toBottomOf="@+id/select_song"
+                app:layout_constraintEnd_toEndOf="@+id/select_song"
+                app:layout_constraintHorizontal_bias="0.943"
+                app:layout_constraintStart_toStartOf="@+id/select_song"
+                app:layout_constraintTop_toTopOf="@+id/select_song"
+                app:layout_constraintVertical_bias="0.75"
+                app:srcCompat="@drawable/ic_downarrow" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
@@ -94,6 +155,7 @@
         app:cardCornerRadius="4dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView11">
 
@@ -109,7 +171,6 @@
                 android:background="@drawable/rounded_button"
                 android:drawableTop="@drawable/room"
                 android:text="방 선택"
-
                 android:textColor="#FFFFFF"
                 android:textSize="18dp"
                 android:textStyle="bold"
@@ -121,18 +182,38 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView14"
+    <Button
+        android:id="@+id/song_payButton"
+        style="@style/ButtonActionStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="결제 완료"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView13"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="118dp"
         app:cardCornerRadius="4dp"
         app:cardUseCompatPadding="true"
+        app:layout_constraintBottom_toTopOf="@+id/song_payButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView12">
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="30dp">
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cardView12">
 
             <RadioGroup
                 android:id="@+id/howpay_radiogroup_song"
@@ -173,23 +254,9 @@
                     android:text="멤버쉽     "
                     android:textSize="17dp" />
 
-
             </RadioGroup>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
 
-
-
-
-    <Button
-        android:id="@+id/song_payButton"
-        style="@style/ButtonActionStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="결제 완료"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
