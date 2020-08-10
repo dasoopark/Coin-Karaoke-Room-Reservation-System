@@ -14,7 +14,10 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.fragment.app.Fragment
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.payment_song.*
 import kotlinx.android.synthetic.main.payment_song.view.*
 import kotlinx.android.synthetic.main.payment_time.*
@@ -30,9 +33,6 @@ const val INTERVAL = 5
 
 
 class payment_songFragment: Fragment() {
-    val database = FirebaseDatabase.getInstance()
-
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
      @SuppressLint("RestrictedApi", "ResourceType")
     var guide_1 = 0
     var guide_2 = 0
@@ -55,7 +55,7 @@ class payment_songFragment: Fragment() {
          var songs : String = ""
          var total_won : Int = 0
 
-         conoRef.addListenerForSingleValueEvent(object : ValueEventListener{
+         conoRef.addListenerForSingleValueEvent(object : ValueEventListener {
              override fun onCancelled(p0: DatabaseError) {}
              override fun onDataChange(p0: DataSnapshot) {
                  var songs500 = p0.child("info/charge/songs/500").value.toString()
@@ -70,34 +70,30 @@ class payment_songFragment: Fragment() {
              }
          })
 
+
          // 예약 시간 선택
          view.time_choiceButton.setOnClickListener{
              val cal = Calendar.getInstance()
-             // Pass activity reference to Builder and set your OnDateTimeSetListener
-             DateTimePicker.Builder(requireActivity())
-                 .onDateTimeSetListener { year, month, dayOfMonth, hourOfDay, minute ->
-                     // Use selected date and time values
-                     cal.set(Calendar.YEAR, year)
-                     cal.set(Calendar.MONTH, month)
-                     cal.set(Calendar.DAY_OF_MONTH,dayOfMonth)
-                     cal.set(Calendar.HOUR_OF_DAY, hourOfDay)
-                     cal.set(Calendar.MINUTE, minute)
 
-                     // 변수 => year, month, dayofmonth, hoursOfDay, minute 으로 쓰면됨
-                     reservation_time.text = SimpleDateFormat("YY년 MM월 dd일 HH시 mm분").format(cal.time)
-                     select_date = SimpleDateFormat("yyyy-MM-dd").format(cal.time).toString()
-                     select_time = SimpleDateFormat("HH:mm").format(cal.time).toString()
+             val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
 
-                     conoRef.child("payment/${select_date}/${select_time}").addListenerForSingleValueEvent(object : ValueEventListener{
-                         override fun onCancelled(p0: DatabaseError) {}
-                         override fun onDataChange(p0: DataSnapshot) {
-                             cono_pay_count = p0.childrenCount.toInt()
-                         }
-                     })
-                 }
-                 .build()
-                 .show()
+                 cal.set(Calendar.HOUR_OF_DAY, hour)
+                 cal.set(Calendar.MINUTE, minute)
+                 reservation_time.text = SimpleDateFormat("HH시 mm분").format(cal.time)
+             }
+
+             val timePickerDialog = CustomTimePickerDialog(requireContext(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar,timeSetListener, Calendar.getInstance()[Calendar.HOUR],
+                 CustomTimePickerDialog.getRoundedMinute(
+                     Calendar.getInstance()[Calendar.MINUTE] + CustomTimePickerDialog.TIME_PICKER_INTERVAL
+                 ),
+                 false
+             )
+
+             timePickerDialog.getWindow()?.setBackgroundDrawableResource(android.R.color.transparent)
+             timePickerDialog.setTitle("예약 시간 선택")
+             timePickerDialog.show()
          }
+        ///
 
          userRef.child("${select_date}").addListenerForSingleValueEvent(object : ValueEventListener {
              override fun onCancelled(p0: DatabaseError) {}
@@ -171,42 +167,8 @@ class payment_songFragment: Fragment() {
              }
          }
 
-         //방 선택하기
-         view.room_choiceButton.setOnClickListener{
-            val builder = AlertDialog.Builder(requireContext())
-            val dialogView = layoutInflater.inflate(R.layout.roomchoice_dialog, null)
-            builder.setView(dialogView)
-                .setPositiveButton("예약") { dialogInterface, i ->
 
-                }
-                .setNegativeButton("취소") { dialogInterface, i ->
-                }
-                .show()
-            // Dialog 사이즈 조절 하기
-        }
 
-        // 예약 시간 선택
-        view.time_choiceButton.setOnClickListener{
-            val cal = Calendar.getInstance()
-
-            val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
-
-                cal.set(Calendar.HOUR_OF_DAY, hour)
-                cal.set(Calendar.MINUTE, minute)
-                reservation_time.text = SimpleDateFormat("HH시 mm분").format(cal.time)
-            }
-
-            val timePickerDialog = CustomTimePickerDialog(requireContext(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar,timeSetListener, Calendar.getInstance()[Calendar.HOUR],
-                CustomTimePickerDialog.getRoundedMinute(
-                    Calendar.getInstance()[Calendar.MINUTE] + CustomTimePickerDialog.TIME_PICKER_INTERVAL
-                ),
-                false
-            )
-
-            timePickerDialog.getWindow()?.setBackgroundDrawableResource(android.R.color.transparent)
-            timePickerDialog.setTitle("예약 시간 선택")
-            timePickerDialog.show()
-        }
          view.howpay_radiogroup_song.setOnCheckedChangeListener { radioGroup, i ->
              when (i) {
                  R.id.toss_song -> paymethod=toss_song.text.toString()
