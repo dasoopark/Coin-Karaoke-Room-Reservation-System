@@ -17,14 +17,14 @@ import kotlinx.android.synthetic.main.payment_song.view.*
 
 class payment_songFragment: Fragment() {
 
-    val database = FirebaseDatabase.getInstance()
-    val userRef = database.getReference("User/${GlobalApplication.prefs.getString("userid","")}/payment")
-    val conoRef = database.getReference("Cono/${GlobalApplication.search_area1}/${GlobalApplication.search_area2}/${GlobalApplication.search_area3}/${GlobalApplication.search_cono}/payment")
+    //val database = FirebaseDatabase.getInstance()
+    //val userRef = database.getReference("User/${GlobalApplication.prefs.getString("userid","")}/payment")
+    //val conoRef = database.getReference("Cono/${GlobalApplication.search_area1}/${GlobalApplication.search_area2}/${GlobalApplication.search_area3}/${GlobalApplication.search_cono}/payment")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,  savedInstanceState: Bundle? ): View? {
         val view = inflater.inflate(R.layout.payment_song, container, false)
         var cono_pay_count : Long = 0
         var user_pay_count : Long = 0
-        view.song_payButton.setOnClickListener{
+        /*view.song_payButton.setOnClickListener{
             userRef.addListenerForSingleValueEvent(object:ValueEventListener{
                 override fun onCancelled(p0: DatabaseError) {}
                 override fun onDataChange(p0: DataSnapshot) {
@@ -65,9 +65,9 @@ class payment_songFragment: Fragment() {
                 userRef.child("${user_pay_count}/method").setValue("멤버쉽")
                 conoRef.child("${cono_pay_count}/method").setValue("멤버쉽")
             }
-            Toast.makeText(requireContext(), "결제가 완료되었습니다.",Toast.LENGTH_SHORT)
+            //Toast.makeText(requireContext(), "결제가 완료되었습니다.",Toast.LENGTH_SHORT)
 
-        }
+        }*/
         view.room_choiceButton.setOnClickListener{
             val builder = AlertDialog.Builder(requireContext())
             val dialogView = layoutInflater.inflate(R.layout.roomchoice_dialog, null)
@@ -82,7 +82,4 @@ class payment_songFragment: Fragment() {
         }
         return view
     }
-
-
-
 }
