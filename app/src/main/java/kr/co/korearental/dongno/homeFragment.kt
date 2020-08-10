@@ -38,6 +38,7 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 
+
 open class homeFragment : Fragment() {
 
     val database = FirebaseDatabase.getInstance()
@@ -80,6 +81,9 @@ open class homeFragment : Fragment() {
             val intent = Intent(this.activity, MapSearch::class.java)
             startActivity(intent)
         }
+
         return view
+
     }
+
 }

@@ -1,5 +1,6 @@
 package kr.co.korearental.dongno
 
+import android.app.TimePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -44,25 +45,31 @@ class payment_timeFragment : Fragment() {
                 // Dialog 사이즈 조절 하기
             }
 
-            view.time_choiceButton_fortime.setOnClickListener {
-                val cal = Calendar.getInstance()
-                // Pass activity reference to Builder and set your OnDateTimeSetListener
-                DateTimePicker.Builder(requireActivity())
-                    .onDateTimeSetListener { year, month, dayOfMonth, hourOfDay, minute ->
-                        // Use selected date and time values
-                        cal.set(Calendar.YEAR, year)
-                        cal.set(Calendar.MONTH, month)
-                        cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                        cal.set(Calendar.HOUR_OF_DAY, hourOfDay)
-                        cal.set(Calendar.MINUTE, minute)
 
-                        // 변수 => year, month, dayofmonth, hoursOfDay, minute 으로 쓰면됨
-                        reservation_time_fortime.text =
-                            SimpleDateFormat("YY년 MM월 dd일 HH시 mm분").format(cal.time)
-                    }
-                    .build()
-                    .show()
+
+        // 예약 시간 선택
+        view.time_choiceButton_fortime.setOnClickListener{
+            val cal = Calendar.getInstance()
+
+            val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+
+                cal.set(Calendar.HOUR_OF_DAY, hour)
+                cal.set(Calendar.MINUTE, minute)
+                reservation_time_fortime.text = SimpleDateFormat("HH시 mm분").format(cal.time)
             }
+
+            val timePickerDialog = CustomTimePickerDialog(requireContext(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar,timeSetListener, Calendar.getInstance()[Calendar.HOUR],
+                CustomTimePickerDialog.getRoundedMinute(
+                    Calendar.getInstance()[Calendar.MINUTE] + CustomTimePickerDialog.TIME_PICKER_INTERVAL
+                ),
+                false
+            )
+
+            timePickerDialog.getWindow()?.setBackgroundDrawableResource(android.R.color.transparent)
+            timePickerDialog.setTitle("예약 시간 선택")
+            timePickerDialog.show()
+        }
+
 
         return view
     }
