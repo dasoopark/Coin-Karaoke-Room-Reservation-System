@@ -8,12 +8,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.view.menu.MenuBuilder
-import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.Fragment
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -70,7 +68,7 @@ class payment_songFragment: Fragment() {
                     cal.set(Calendar.HOUR_OF_DAY, hourOfDay)
                     cal.set(Calendar.MINUTE, minute)
 
-                   // 변수 => year, month, dayofmonth, hoursOfDay, minute 으로 쓰면됨
+                    // 변수 => year, month, dayofmonth, hoursOfDay, minute 으로 쓰면됨
                     reservation_time.text = SimpleDateFormat("YY년 MM월 dd일 HH시 mm분").format(cal.time)
 
                 }
@@ -78,8 +76,23 @@ class payment_songFragment: Fragment() {
                 .show()
         }
 
+        //곡 선택하기
+        view.select_song.showSoftInputOnFocus = false
+        view.select_song.setOnClickListener {
+            val menuView = PopupMenuView(requireContext(), R.menu.menu_pop, MenuBuilder(context))
+            menuView.setOnMenuClickListener(object : OnOptionMenuClickListener {
+                override fun onOptionMenuClick(position: Int, menu: OptionMenu): Boolean {
+                    Toast.makeText(requireContext(), menu.title, Toast.LENGTH_SHORT).show()
+                    select_song.setText(menu.title)
+                    return true
+                }
+            })
+            menuView.setSites(PopupView.SITE_BOTTOM, PopupView.SITE_LEFT, PopupView.SITE_TOP, PopupView.SITE_RIGHT)
+            menuView.show(select_song)
+        }
+
+
         return view
     }
 
 }
-
