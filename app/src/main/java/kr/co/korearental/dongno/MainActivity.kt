@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -66,6 +67,12 @@ class MainActivity : AppCompatActivity() {
             val dialogView = layoutInflater.inflate(R.layout.login_dialog, null)
             val dialogUserEmail = dialogView.findViewById<EditText>(R.id.useremail)
             val dialogUserPassword = dialogView.findViewById<EditText>(R.id.password)
+            val dialogcheckbox = dialogView.findViewById<CheckBox>(R.id.checkBox)
+            if(GlobalApplication.prefs.getString("chkbox", "")=="true") {
+                dialogcheckbox.isChecked = true
+                dialogUserEmail.setText(GlobalApplication.prefs.getString("email_id", ""))
+                dialogUserPassword.setText(GlobalApplication.prefs.getString("email_pw", ""))
+            }
             builder.setView(dialogView)
                 .setPositiveButton("로그인") { dialogInterface, i ->
                     if(dialogUserEmail.text.toString() == ""){
@@ -73,6 +80,15 @@ class MainActivity : AppCompatActivity() {
                     }else if(dialogUserPassword.text.toString() == ""){
                         Toast.makeText(applicationContext, "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
                     }else{
+                        if(dialogcheckbox.isChecked){
+                            GlobalApplication.prefs.setString("chkbox", "true")
+                            GlobalApplication.prefs.setString("email_id", dialogUserEmail.text.toString())
+                            GlobalApplication.prefs.setString("email_pw", dialogUserPassword.text.toString())
+                        }else{
+                            GlobalApplication.prefs.setString("chkbox", "false")
+                            GlobalApplication.prefs.setString("email_id", "")
+                            GlobalApplication.prefs.setString("email_pw", "")
+                        }
                         val mAuth : FirebaseAuth = FirebaseAuth.getInstance()
                         mAuth.signInWithEmailAndPassword(dialogUserEmail.text.toString(), dialogUserPassword.text.toString())
                             .addOnCompleteListener(this){
@@ -83,6 +99,16 @@ class MainActivity : AppCompatActivity() {
                                     userRef.addListenerForSingleValueEvent(object : ValueEventListener{
                                         override fun onCancelled(p0: DatabaseError) {}
                                         override fun onDataChange(p0: DataSnapshot) {
+                                            if(p0.child("admin").value.toString() == "true"){
+                                                GlobalApplication.search_area1 = p0.child("area1").value.toString()
+                                                GlobalApplication.search_area2 = p0.child("area2").value.toString()
+                                                GlobalApplication.search_area3 = p0.child("area3").value.toString()
+                                                GlobalApplication.search_cono = p0.child("cono").value.toString()
+                                                val intent = Intent(this@MainActivity, AdminActivity::class.java)
+                                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                                startActivity(intent)
+                                                return
+                                            }
                                             GlobalApplication.account_email = p0.child("email").value.toString()
                                             GlobalApplication.account_name = p0.child("name").value.toString()
                                             GlobalApplication.account_profile = ""
