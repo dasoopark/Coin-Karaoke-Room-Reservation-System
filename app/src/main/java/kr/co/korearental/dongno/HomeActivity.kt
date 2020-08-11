@@ -1,10 +1,13 @@
 package kr.co.korearental.dongno
 
+import android.app.PendingIntent
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import io.karn.notify.Notify
 import kotlinx.android.synthetic.main.home.*
 
 
@@ -25,6 +28,25 @@ class HomeActivity : AppCompatActivity(){
         setContentView(R.layout.home)
 
         initView()
+
+
+        sextext.setOnClickListener{
+            Notify
+                .with(this)
+                .meta { //// Launch the MainActivity once the notification is clicked.
+                    clickIntent = PendingIntent.getActivity(this@HomeActivity,
+                        0,
+                        Intent(this@HomeActivity, HomeActivity::class.java),
+                        0)
+                    // Start a service which clears the badge count once the notification is dismissed.
+                }
+                .content { // this: Payload.Content.Default
+                    title = "예약 시간이 되었습니다."
+                    text = "ㄹㄹㄹㄹㄹㄹㄹ"
+                }
+                .show()
+        }
+
     }
 
     private fun initView() {
@@ -34,6 +56,16 @@ class HomeActivity : AppCompatActivity(){
         // start from Home
         changeFragmentTo(FragmentType.home)
         selected = 1
+
+    }
+
+    private fun notifyinitView() {
+        // set navigation Listener
+        bottomNavigationView.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+
+        // start from Home
+        changeFragmentTo(FragmentType.alarm)
+        selected = 3
     }
 
     private val onNavigationItemSelectedListener = BottomNavigationView.OnNavigationItemSelectedListener { item ->

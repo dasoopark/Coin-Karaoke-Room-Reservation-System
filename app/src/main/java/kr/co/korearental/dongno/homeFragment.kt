@@ -2,6 +2,7 @@ package kr.co.korearental.dongno
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -18,6 +19,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.IconCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import io.karn.notify.Notify
 import kotlinx.android.synthetic.main.home.*
 import kotlinx.android.synthetic.main.homefragment.*
 import kotlinx.android.synthetic.main.homefragment.view.*
@@ -37,6 +40,7 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.concurrent.TimeUnit
 
 
 open class homeFragment : Fragment() {
@@ -82,8 +86,9 @@ open class homeFragment : Fragment() {
             startActivity(intent)
         }
 
-        return view
 
+
+        return view
     }
 
 }
