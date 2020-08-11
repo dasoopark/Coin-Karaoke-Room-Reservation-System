@@ -30,15 +30,13 @@ import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
 
-const val INTERVAL = 5
-
-
 class payment_songFragment: Fragment() {
-     @SuppressLint("RestrictedApi", "ResourceType")
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    @SuppressLint("RestrictedApi")
+    
     var guide_1 = 0
     var guide_2 = 0
-     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-     @SuppressLint("RestrictedApi")
+     
      override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
          val view = inflater.inflate(R.layout.payment_song, container, false)
 
@@ -75,18 +73,19 @@ class payment_songFragment: Fragment() {
                  })
              }
 
-             val timePickerDialog = CustomTimePickerDialog(requireContext(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar,timeSetListener, Calendar.getInstance()[Calendar.HOUR],
-                 CustomTimePickerDialog.getRoundedMinute(
-                     Calendar.getInstance()[Calendar.MINUTE] + CustomTimePickerDialog.TIME_PICKER_INTERVAL
-                 ),
-                 false
-             )
+             val timePickerDialog : TimePickerDialog
+             var hour = Calendar.getInstance()[Calendar.HOUR_OF_DAY]
+             val minute = CustomTimePickerDialog.getRoundedMinute(Calendar.getInstance()[Calendar.MINUTE] + CustomTimePickerDialog.TIME_PICKER_INTERVAL)
+             if(minute == 0){
+                 hour += 1
+             }
+             timePickerDialog = CustomTimePickerDialog(requireContext(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar,timeSetListener, hour, minute,true)
 
              timePickerDialog.getWindow()?.setBackgroundDrawableResource(android.R.color.transparent)
              timePickerDialog.setTitle("예약 시간 선택")
              timePickerDialog.show()
          }
-         ///
+
          conoRef.addListenerForSingleValueEvent(object : ValueEventListener {
              override fun onCancelled(p0: DatabaseError) {}
              override fun onDataChange(p0: DataSnapshot) {
@@ -188,32 +187,35 @@ class payment_songFragment: Fragment() {
                  Toast.makeText(requireContext(), "곡 수를 선택해주세요.", Toast.LENGTH_SHORT).show()
              }else if(paymethod == ""){
                  Toast.makeText(requireContext(), "결제 수단을 선택해주세요.", Toast.LENGTH_SHORT).show()
+             }else if(Calendar.getInstance()[Calendar.HOUR_OF_DAY]>select_time.substring(0, 2).toInt()){
+                 Toast.makeText(requireContext(), "올바른 시간을 선택해주세요.", Toast.LENGTH_SHORT).show()
              }else if(cono_pay_count >= 10){
                  Toast.makeText(requireContext(), "해당 시간은 전부 예약되었습니다.\n다른 시간을 선택해주세요.", Toast.LENGTH_SHORT).show()
              }else {
+                 if((Calendar.getInstance()[Calendar.HOUR_OF_DAY]==select_time.substring(0, 2).toInt())&&(Calendar.getInstance()[Calendar.MINUTE]>select_time.substring(4, 6).toInt())){
+                     Toast.makeText(requireContext(), "올바른 시간을 선택해주세요.", Toast.LENGTH_SHORT).show()
+                 }else {
+                     cono_pay_count++
+                     user_pay_count++
 
+                     conoRef.child("payment/${today}/${select_time}/${cono_pay_count}/criteria/songs").setValue(songs)    //곡 수 저장
+                     userRef.child("${today}/${user_pay_count}/criteria/songs").setValue(songs)                           //곡 수 저장
 
-                 cono_pay_count++
-                 user_pay_count++
+                     conoRef.child("payment/${today}/${select_time}/${cono_pay_count}/paymethod").setValue(paymethod)     //결제 수단 저장
+                     userRef.child("${today}/${user_pay_count}/paymethod").setValue(paymethod)                            //결제 수단 저장
 
+                     conoRef.child("payment/${today}/${select_time}/${cono_pay_count}/userid").setValue(GlobalApplication.prefs.getString("userid", "Error"))
+                     userRef.child("${today}/${user_pay_count}/cononame").setValue(GlobalApplication.search_cono)    // 예약한 코노 이름 저장
 
-                 conoRef.child("payment/${today}/${select_time}/${cono_pay_count}/criteria/songs").setValue(songs)    //곡 수 저장
-                 userRef.child("${today}/${user_pay_count}/criteria/songs").setValue(songs)                           //곡 수 저장
+                     conoRef.child("payment/${today}/${select_time}/${cono_pay_count}/reserveTime").setValue(select_time)    // 선택한 시작시간 저장
+                     userRef.child("${today}/${user_pay_count}/reserveTime").setValue(select_time)                           // 선택한 시작시간 저장
 
-                 conoRef.child("payment/${today}/${select_time}/${cono_pay_count}/paymethod").setValue(paymethod)     //결제 수단 저장
-                 userRef.child("${today}/${user_pay_count}/paymethod").setValue(paymethod)                            //결제 수단 저장
+                     conoRef.child("payment/${today}/${select_time}/${cono_pay_count}/payTotal").setValue(total_won)      // 결제 금액 저장
+                     userRef.child("${today}/${user_pay_count}/payTotal").setValue(total_won)                             // 결제 금액 저장
 
-                 conoRef.child("payment/${today}/${select_time}/${cono_pay_count}/userid").setValue(GlobalApplication.prefs.getString("userid", "Error"))
-                 userRef.child("${today}/${user_pay_count}/cononame").setValue(GlobalApplication.search_cono)    // 예약한 코노 이름 저장
-
-                 conoRef.child("payment/${today}/${select_time}/${cono_pay_count}/reserveTime").setValue(select_time)    // 선택한 시작시간 저장
-                 userRef.child("${today}/${user_pay_count}/reserveTime").setValue(select_time)                           // 선택한 시작시간 저장
-
-                 conoRef.child("payment/${today}/${select_time}/${cono_pay_count}/payTotal").setValue(total_won)      // 결제 금액 저장
-                 userRef.child("${today}/${user_pay_count}/payTotal").setValue(total_won)                             // 결제 금액 저장
-
-                 Toast.makeText(requireContext(), "결제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
-                 activity?.finish()
+                     Toast.makeText(requireContext(), "결제가 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                     activity?.finish()
+                 }
              }
          }
 
