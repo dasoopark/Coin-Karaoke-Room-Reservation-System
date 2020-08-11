@@ -14,7 +14,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationServices
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.kakao.auth.ApiErrorCode
 import com.kakao.auth.ISessionCallback
 import com.kakao.auth.Session
@@ -26,6 +30,7 @@ import com.kakao.usermgmt.response.MeV2Response
 import com.kakao.util.OptionalBoolean
 import com.kakao.util.exception.KakaoException
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.login_dialog.view.*
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -59,10 +64,85 @@ class MainActivity : AppCompatActivity() {
         btn_login.setOnClickListener{
             val builder = AlertDialog.Builder(this)
             val dialogView = layoutInflater.inflate(R.layout.login_dialog, null)
-            val dialogText = dialogView.findViewById<EditText>(R.id.reviewContent)
-            val dialogRatingBar = dialogView.findViewById<EditText>(R.id.password)
+            val dialogUserEmail = dialogView.findViewById<EditText>(R.id.useremail)
+            val dialogUserPassword = dialogView.findViewById<EditText>(R.id.password)
             builder.setView(dialogView)
                 .setPositiveButton("로그인") { dialogInterface, i ->
+                    if(dialogUserEmail.text.toString() == ""){
+                        Toast.makeText(applicationContext, "Email을 입력해주세요.", Toast.LENGTH_SHORT).show()
+                    }else if(dialogUserPassword.text.toString() == ""){
+                        Toast.makeText(applicationContext, "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
+                    }else{
+                        val mAuth : FirebaseAuth = FirebaseAuth.getInstance()
+                        mAuth.signInWithEmailAndPassword(dialogUserEmail.text.toString(), dialogUserPassword.text.toString())
+                            .addOnCompleteListener(this){
+                                if(it.isSuccessful){
+                                    val user = mAuth.currentUser
+                                    val database = FirebaseDatabase.getInstance()
+                                    val userRef = database.getReference("User/${user!!.uid}/info")
+                                    userRef.addListenerForSingleValueEvent(object : ValueEventListener{
+                                        override fun onCancelled(p0: DatabaseError) {}
+                                        override fun onDataChange(p0: DataSnapshot) {
+                                            GlobalApplication.account_email = p0.child("email").value.toString()
+                                            GlobalApplication.account_name = p0.child("name").value.toString()
+                                            GlobalApplication.account_profile = ""
+                                            GlobalApplication.prefs.setString("userid", user.uid)
+                                            GlobalApplication.prefs.setString("username",GlobalApplication.account_name)
+                                        }
+                                    })
+                                    // 로그인이 성공했을 때
+                                    val intent = Intent(this@MainActivity, HomeActivity::class.java)
+
+                                    val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this@MainActivity)
+                                    fusedLocationClient.lastLocation
+                                        .addOnSuccessListener { location ->
+                                            if(location == null) {
+                                                Toast.makeText(applicationContext, "location get fail", Toast.LENGTH_SHORT).show()
+                                            } else {
+                                                GlobalApplication.latitude = location.latitude
+                                                GlobalApplication.longitude = location.longitude
+                                                Thread{
+                                                    var response = StringBuffer()
+                                                    try {
+                                                        val apiurl =
+                                                            URL("https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc?coords=${GlobalApplication.longitude},${GlobalApplication.latitude}&orders=legalcode&output=json")
+                                                        val con = apiurl.openConnection() as HttpURLConnection
+                                                        con.requestMethod = "GET"
+                                                        con.setRequestProperty("X-NCP-APIGW-API-KEY-ID", "4cbtm9g0q6")
+                                                        con.setRequestProperty("X-NCP-APIGW-API-KEY", "isgBHvU8rLoXBL9vqdLdhnxmX6ZJg47liwqztbNw")
+                                                        val responseCode = con.responseCode
+                                                        val br: BufferedReader
+                                                        if (responseCode == 200) { // 정상 호출
+                                                            br = BufferedReader(InputStreamReader(con.inputStream))
+                                                        } else {  // 에러 발생
+                                                            br = BufferedReader(InputStreamReader(con.errorStream))
+                                                        }
+                                                        var inputLine: String?
+                                                        while (br.readLine().also { inputLine = it } != null) {
+                                                            response.append(inputLine)
+                                                        }
+                                                        br.close()
+                                                    }catch(e:Exception){
+                                                    }
+                                                    val json = JSONObject(response.toString())
+                                                    val jsonArray = json.getJSONArray("results").getJSONObject(0).getJSONObject("region")
+                                                    GlobalApplication.area1 = jsonArray.getJSONObject("area1").getString("name")
+                                                    GlobalApplication.area2 = jsonArray.getJSONObject("area2").getString("name")
+                                                    GlobalApplication.area3 = jsonArray.getJSONObject("area3").getString("name")
+                                                    startActivity(intent)
+                                                    finish()
+                                                }.start()
+                                            }
+                                        }
+                                        .addOnFailureListener {
+                                            it.printStackTrace()
+                                            Toast.makeText(applicationContext, "위치를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show()
+                                        }
+                                }else{
+                                    Toast.makeText(applicationContext, "다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                    }
                 }
                 .setNegativeButton("취소") { dialogInterface, i ->
                     /* 취소일 때 아무 액션이 없으므로 빈칸 */

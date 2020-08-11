@@ -103,6 +103,8 @@ class selecthomeitemFragment : Fragment(){
                 userRef.child("bookmark/${GlobalApplication.area1}/${GlobalApplication.area2}/${GlobalApplication.area3}/${idx}/image").setValue("$imageurl")
                 userRef.child("bookmark/${GlobalApplication.area1}/${GlobalApplication.area2}/${GlobalApplication.area3}/${idx}/tel").setValue("${cono_callnum.text}")
                 userRef.child("bookmark/${GlobalApplication.area1}/${GlobalApplication.area2}/${GlobalApplication.area3}/${idx}/rating_avg").setValue("$rating_avg")
+                userRef.child("bookmark/${GlobalApplication.area1}/${GlobalApplication.area2}/${GlobalApplication.area3}/${idx}/x").setValue("${activity?.intent?.getDoubleExtra("x", 0.0).toString()}")
+                userRef.child("bookmark/${GlobalApplication.area1}/${GlobalApplication.area2}/${GlobalApplication.area3}/${idx}/y").setValue("${activity?.intent?.getDoubleExtra("y", 0.0).toString()}")
                 chk = true
                 bookmark.setImageResource(R.drawable.star2)
                 Toast.makeText(requireContext(), "즐겨찾기 목록에 추가되었습니다.", Toast.LENGTH_SHORT).show()

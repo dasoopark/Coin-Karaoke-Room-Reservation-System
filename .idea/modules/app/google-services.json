@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "613671419557",
+    "firebase_url": "https://findsing-ec5fb.firebaseio.com",
+    "project_id": "findsing-ec5fb",
+    "storage_bucket": "findsing-ec5fb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613671419557:android:dd8d682b289c3a1dcf174c",
+        "android_client_info": {
+          "package_name": "kr.co.korearental.dongno"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "613671419557-qkh933vrfghakuql3dp9nnkqvnbab7gf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kr.co.korearental.dongno",
+            "certificate_hash": "e42d83b67118603aa1dfc324510a60bb30937ff0"
+          }
+        },
+        {
+          "client_id": "613671419557-ejkkngolfnknqaad1uq7nc7ekbugbfvh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtyRuxoMbbUN9VheW4xdbSGAPoZOcm-j4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "613671419557-ejkkngolfnknqaad1uq7nc7ekbugbfvh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
