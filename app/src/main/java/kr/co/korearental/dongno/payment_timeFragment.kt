@@ -1,5 +1,6 @@
 package kr.co.korearental.dongno
 
+import android.app.TimePickerDialog
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Build
@@ -53,6 +54,34 @@ class payment_timeFragment : Fragment() {
         var aHour_won : Int = 0
         var thirtyMin_won : Int = 0
         var total_won : Int = 0
+
+
+
+
+       /*
+        view.time_choiceButton_fortime.setOnClickListener{
+            val cal = Calendar.getInstance()
+
+            val timeSetListener = TimePickerDialog.OnTimeSetListener { timePicker, hour, minute ->
+
+                cal.set(Calendar.HOUR_OF_DAY, hour)
+                cal.set(Calendar.MINUTE, minute)
+                reservation_time_fortime.text = SimpleDateFormat("HH시 mm분").format(cal.time)
+            }
+
+            val timePickerDialog = CustomTimePickerDialog(requireContext(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar,timeSetListener, Calendar.getInstance()[Calendar.HOUR],
+                CustomTimePickerDialog.getRoundedMinute(
+                    Calendar.getInstance()[Calendar.MINUTE] + CustomTimePickerDialog.TIME_PICKER_INTERVAL
+                ),
+                false
+            )
+
+            timePickerDialog.getWindow()?.setBackgroundDrawableResource(android.R.color.transparent)
+            timePickerDialog.setTitle("예약 시간 선택")
+            timePickerDialog.show()
+        }
+        */
+
 
         view.time_choiceButton_fortime.setOnClickListener {
             val cal = Calendar.getInstance()
