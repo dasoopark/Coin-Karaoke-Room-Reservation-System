@@ -51,13 +51,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
-        }
-
         //manifests에 globalapplication 추가했는지 꼭 확인할 것!
+        //카카오톡 자동 로그인
         callback = SessionCallback()
         Session.getCurrentSession().addCallback(callback)
         Session.getCurrentSession().checkAndImplicitOpen()
@@ -99,71 +94,27 @@ class MainActivity : AppCompatActivity() {
                                     userRef.addListenerForSingleValueEvent(object : ValueEventListener{
                                         override fun onCancelled(p0: DatabaseError) {}
                                         override fun onDataChange(p0: DataSnapshot) {
-                                            if(p0.child("admin").value.toString() == "true"){
-                                                GlobalApplication.search_area1 = p0.child("area1").value.toString()
-                                                GlobalApplication.search_area2 = p0.child("area2").value.toString()
-                                                GlobalApplication.search_area3 = p0.child("area3").value.toString()
-                                                GlobalApplication.search_cono = p0.child("cono").value.toString()
-                                                val intent = Intent(this@MainActivity, AdminActivity::class.java)
-                                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
-                                                startActivity(intent)
-                                                return
-                                            }
                                             GlobalApplication.account_email = p0.child("email").value.toString()
                                             GlobalApplication.account_name = p0.child("name").value.toString()
                                             GlobalApplication.account_profile = ""
                                             GlobalApplication.prefs.setString("userid", user.uid)
                                             GlobalApplication.prefs.setString("username",GlobalApplication.account_name)
-                                        }
-                                    })
-                                    // 로그인이 성공했을 때
-                                    val intent = Intent(this@MainActivity, HomeActivity::class.java)
-
-                                    val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this@MainActivity)
-                                    fusedLocationClient.lastLocation
-                                        .addOnSuccessListener { location ->
-                                            if(location == null) {
-                                                Toast.makeText(applicationContext, "location get fail", Toast.LENGTH_SHORT).show()
-                                            } else {
-                                                GlobalApplication.latitude = location.latitude
-                                                GlobalApplication.longitude = location.longitude
-                                                Thread{
-                                                    var response = StringBuffer()
-                                                    try {
-                                                        val apiurl =
-                                                            URL("https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc?coords=${GlobalApplication.longitude},${GlobalApplication.latitude}&orders=legalcode&output=json")
-                                                        val con = apiurl.openConnection() as HttpURLConnection
-                                                        con.requestMethod = "GET"
-                                                        con.setRequestProperty("X-NCP-APIGW-API-KEY-ID", "4cbtm9g0q6")
-                                                        con.setRequestProperty("X-NCP-APIGW-API-KEY", "isgBHvU8rLoXBL9vqdLdhnxmX6ZJg47liwqztbNw")
-                                                        val responseCode = con.responseCode
-                                                        val br: BufferedReader
-                                                        if (responseCode == 200) { // 정상 호출
-                                                            br = BufferedReader(InputStreamReader(con.inputStream))
-                                                        } else {  // 에러 발생
-                                                            br = BufferedReader(InputStreamReader(con.errorStream))
-                                                        }
-                                                        var inputLine: String?
-                                                        while (br.readLine().also { inputLine = it } != null) {
-                                                            response.append(inputLine)
-                                                        }
-                                                        br.close()
-                                                    }catch(e:Exception){
-                                                    }
-                                                    val json = JSONObject(response.toString())
-                                                    val jsonArray = json.getJSONArray("results").getJSONObject(0).getJSONObject("region")
-                                                    GlobalApplication.area1 = jsonArray.getJSONObject("area1").getString("name")
-                                                    GlobalApplication.area2 = jsonArray.getJSONObject("area2").getString("name")
-                                                    GlobalApplication.area3 = jsonArray.getJSONObject("area3").getString("name")
-                                                    startActivity(intent)
-                                                    finish()
-                                                }.start()
+                                            if(p0.child("admin").value.toString() == "true"){
+                                                // 관리자 로그인
+                                                GlobalApplication.search_area1 = p0.child("area1").value.toString()
+                                                GlobalApplication.search_area2 = p0.child("area2").value.toString()
+                                                GlobalApplication.search_area3 = p0.child("area3").value.toString()
+                                                GlobalApplication.search_cono = p0.child("cono").value.toString()
+                                                val intent = Intent(this@MainActivity, AdminActivity::class.java)
+                                                intent.putExtra("address", p0.child("address").value.toString())
+                                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                                startActivity(intent)
+                                            }else{
+                                                // 사용자 로그인
+                                                getLocationToHome()
                                             }
                                         }
-                                        .addOnFailureListener {
-                                            it.printStackTrace()
-                                            Toast.makeText(applicationContext, "위치를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show()
-                                        }
+                                    })
                                 }else{
                                     Toast.makeText(applicationContext, "다시 시도해주세요.", Toast.LENGTH_SHORT).show()
                                 }
@@ -174,7 +125,6 @@ class MainActivity : AppCompatActivity() {
                     /* 취소일 때 아무 액션이 없으므로 빈칸 */
                 }
                 .show()
-                // Dialog 사이즈 조절 하기
         }
 
         account_plus.setOnClickListener{
@@ -193,22 +143,6 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         Session.getCurrentSession().removeCallback(callback)
-    }
-
-
-    // 앱의 해쉬 키 얻는 함수
-    private fun getAppKeyHash() {
-        try {
-            val info = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
-            for (signature in info.signatures) {
-                val md: MessageDigest = MessageDigest.getInstance("SHA")
-                md.update(signature.toByteArray())
-                val something = String(Base64.encode(md.digest(), 0))
-                Log.e("Hash key", something)
-            }
-        } catch (e: Exception) {
-            Log.e("name not found", e.toString())
-        }
     }
 
     private inner class SessionCallback : ISessionCallback {
@@ -246,72 +180,21 @@ class MainActivity : AppCompatActivity() {
                             }
                         })
                     } else {
-                        //DB
-
+                        // 로그인이 성공했을 때
                         val database = FirebaseDatabase.getInstance()
                         val userRef = database.getReference("User")
-
                         val userid = result.id.toString()
-                        val usernickname = result.kakaoAccount.profile.nickname
-                        val userthumbnail = result.kakaoAccount.profile.thumbnailImageUrl
-                        val useremail = result.kakaoAccount.email
-                        GlobalApplication.account_name = usernickname
-                        GlobalApplication.account_profile = userthumbnail
-                        GlobalApplication.account_email = useremail
-                        GlobalApplication.prefs.setString("userid",userid)
-                        GlobalApplication.prefs.setString("username",usernickname)
-                        userRef.child(userid).child("info").child("name").setValue(usernickname)
-                        userRef.child(userid).child("info").child("email").setValue(useremail)
-                        userRef.child(userid).child("info").child("thumbnail").setValue(userthumbnail)
+                        GlobalApplication.account_email = result.kakaoAccount.email
+                        GlobalApplication.account_name = result.kakaoAccount.profile.nickname
+                        GlobalApplication.account_profile = result.kakaoAccount.profile.thumbnailImageUrl
+                        GlobalApplication.prefs.setString("userid", userid)
+                        GlobalApplication.prefs.setString("username", GlobalApplication.account_name)
+                        userRef.child(userid).child("info").child("email").setValue(GlobalApplication.account_email)
+                        userRef.child(userid).child("info").child("name").setValue(GlobalApplication.account_name)
+                        userRef.child(userid).child("info").child("thumbnail").setValue(GlobalApplication.account_profile)
 
-                        // 로그인이 성공했을 때
-                        val intent = Intent(this@MainActivity, HomeActivity::class.java)
-
-                        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this@MainActivity)
-                        fusedLocationClient.lastLocation
-                            .addOnSuccessListener { location ->
-                                if(location == null) {
-                                    Toast.makeText(applicationContext, "location get fail", Toast.LENGTH_SHORT).show()
-                                } else {
-                                    GlobalApplication.latitude = location.latitude
-                                    GlobalApplication.longitude = location.longitude
-                                    Thread{
-                                        var response = StringBuffer()
-                                        try {
-                                            val apiurl =
-                                                URL("https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc?coords=${GlobalApplication.longitude},${GlobalApplication.latitude}&orders=legalcode&output=json")
-                                            val con = apiurl.openConnection() as HttpURLConnection
-                                            con.requestMethod = "GET"
-                                            con.setRequestProperty("X-NCP-APIGW-API-KEY-ID", "4cbtm9g0q6")
-                                            con.setRequestProperty("X-NCP-APIGW-API-KEY", "isgBHvU8rLoXBL9vqdLdhnxmX6ZJg47liwqztbNw")
-                                            val responseCode = con.responseCode
-                                            val br: BufferedReader
-                                            if (responseCode == 200) { // 정상 호출
-                                                br = BufferedReader(InputStreamReader(con.inputStream))
-                                            } else {  // 에러 발생
-                                                br = BufferedReader(InputStreamReader(con.errorStream))
-                                            }
-                                            var inputLine: String?
-                                            while (br.readLine().also { inputLine = it } != null) {
-                                                response.append(inputLine)
-                                            }
-                                            br.close()
-                                        }catch(e:Exception){
-                                        }
-                                        val json = JSONObject(response.toString())
-                                        val jsonArray = json.getJSONArray("results").getJSONObject(0).getJSONObject("region")
-                                        GlobalApplication.area1 = jsonArray.getJSONObject("area1").getString("name")
-                                        GlobalApplication.area2 = jsonArray.getJSONObject("area2").getString("name")
-                                        GlobalApplication.area3 = jsonArray.getJSONObject("area3").getString("name")
-                                        startActivity(intent)
-                                        finish()
-                                    }.start()
-                                }
-                            }
-                            .addOnFailureListener {
-                                it.printStackTrace()
-                                Toast.makeText(applicationContext, "위치를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show()
-                            }
+                        // 위치 조회 후 HomeActivity로 이동
+                        getLocationToHome()
                     }
                 }
 
@@ -330,12 +213,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun redirectSignupActivity() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
-
     override fun onBackPressed() {
         if (System.currentTimeMillis() > backKeyPressedTime + 1500) {
             backKeyPressedTime = System.currentTimeMillis()
@@ -347,6 +224,76 @@ class MainActivity : AppCompatActivity() {
         if (System.currentTimeMillis() <= backKeyPressedTime + 1500) {
             finish()
             toast.cancel()
+        }
+    }
+
+    fun getLocationToHome(){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+        }
+
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this@MainActivity)
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location ->
+                if(location == null) {
+                    Toast.makeText(applicationContext, "location get fail", Toast.LENGTH_SHORT).show()
+                } else {
+                    GlobalApplication.latitude = location.latitude
+                    GlobalApplication.longitude = location.longitude
+                    Thread{
+                        val response = StringBuffer()
+                        try {
+                            val apiurl = URL("https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc?coords=${GlobalApplication.longitude},${GlobalApplication.latitude}&orders=legalcode&output=json")
+                            val con = apiurl.openConnection() as HttpURLConnection
+                            con.requestMethod = "GET"
+                            con.setRequestProperty("X-NCP-APIGW-API-KEY-ID", "4cbtm9g0q6")
+                            con.setRequestProperty("X-NCP-APIGW-API-KEY", "isgBHvU8rLoXBL9vqdLdhnxmX6ZJg47liwqztbNw")
+                            val responseCode = con.responseCode
+                            val br: BufferedReader
+                            if (responseCode == 200) { // 정상 호출
+                                br = BufferedReader(InputStreamReader(con.inputStream))
+                            } else {  // 에러 발생
+                                br = BufferedReader(InputStreamReader(con.errorStream))
+                            }
+                            var inputLine: String?
+                            while (br.readLine().also { inputLine = it } != null) {
+                                response.append(inputLine)
+                            }
+                            br.close()
+                        }catch(e:Exception){
+                        }
+                        val json = JSONObject(response.toString())
+                        val jsonArray = json.getJSONArray("results").getJSONObject(0).getJSONObject("region")
+                        GlobalApplication.area1 = jsonArray.getJSONObject("area1").getString("name")
+                        GlobalApplication.area2 = jsonArray.getJSONObject("area2").getString("name")
+                        GlobalApplication.area3 = jsonArray.getJSONObject("area3").getString("name")
+                        val intent = Intent(this@MainActivity, HomeActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    }.start()
+                }
+            }
+            .addOnFailureListener {
+                it.printStackTrace()
+                Toast.makeText(applicationContext, "위치를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show()
+                finish()
+            }
+    }
+
+    // 앱의 해쉬 키 얻는 함수
+    private fun getAppKeyHash() {
+        try {
+            val info = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
+            for (signature in info.signatures) {
+                val md: MessageDigest = MessageDigest.getInstance("SHA")
+                md.update(signature.toByteArray())
+                val something = String(Base64.encode(md.digest(), 0))
+                Log.e("Hash key", something)
+            }
+        } catch (e: Exception) {
+            Log.e("name not found", e.toString())
         }
     }
 }

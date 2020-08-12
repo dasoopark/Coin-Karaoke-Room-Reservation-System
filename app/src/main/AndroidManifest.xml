@@ -17,7 +17,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".AdminActivity"></activity>
+        <activity android:name=".AdminReview"></activity>
+        <activity android:name=".AdminActivity" />
         <activity
             android:name=".SplashActivity"
             android:theme="@style/IntroTheme">
