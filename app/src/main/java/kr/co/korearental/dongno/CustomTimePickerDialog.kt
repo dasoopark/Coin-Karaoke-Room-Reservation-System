@@ -13,6 +13,7 @@ class CustomTimePickerDialog(context: Context?, item:Int , callBack:OnTimeSetLis
  * @see android.app.TimePickerDialog#onTimeChanged(android.widget.TimePicker, int, int)
  * Implements Time Change Interval
  */
+
     override fun onTimeChanged(
         timePicker: TimePicker,
         hourOfDay: Int,
@@ -34,10 +35,8 @@ class CustomTimePickerDialog(context: Context?, item:Int , callBack:OnTimeSetLis
         fun getRoundedMinute(minute: Int): Int {
             var minute = minute
             if (minute % TIME_PICKER_INTERVAL != 0) {
-                val minuteFloor =
-                    minute - minute % TIME_PICKER_INTERVAL
-                minute =
-                    minuteFloor + if (minute == minuteFloor + 1) TIME_PICKER_INTERVAL else 0
+                val minuteFloor = minute - minute % TIME_PICKER_INTERVAL
+                minute = minuteFloor + if (minute == minuteFloor + 1) TIME_PICKER_INTERVAL else 0
                 if (minute == 60) minute = 0
             }
             return minute

@@ -35,10 +35,12 @@ class bookmarkFragment  : Fragment(){
                                 val address=cono.child("address").value.toString()
                                 val imgUrl=cono.child("image").value.toString()
                                 var rating=cono.child("rating_avg").value.toString()
+                                val x = cono.child("x").value.toString().toDouble()
+                                val y = cono.child("y").value.toString().toDouble()
                                 if(rating == "null"){
                                     rating = "0.0"
                                 }
-                                GlobalApplication.listbookmark.add(bookmark(imgUrl,name,address,rating.toFloat(), area1.key.toString(), area2.key.toString(), area3.key.toString()))
+                                GlobalApplication.listbookmark.add(bookmark(imgUrl,name,address,rating.toFloat(), area1.key.toString(), area2.key.toString(), area3.key.toString(), x, y))
                             }
                         }
                     }

@@ -30,7 +30,7 @@ class paylogActivity : AppCompatActivity() {
             override fun onDataChange(p0: DataSnapshot) {
                 for(snapshot in p0.children){
                     for(info in snapshot.children){
-                        listpaylog.add(Paylog(info.child("cononame").value.toString(),snapshot.key.toString(),info.child("payTotal").value.toString()+"원"))
+                        listpaylog.add(0, Paylog(info.child("cononame").value.toString(),snapshot.key.toString(),info.child("payTotal").value.toString()+"원"))
                         total_price+=info.child("payTotal").value.toString().toInt()
                     }
                 }
