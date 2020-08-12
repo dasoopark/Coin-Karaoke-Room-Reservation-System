@@ -1,6 +1,8 @@
 package kr.co.korearental.dongno
 
+import android.app.AlarmManager
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
@@ -9,6 +11,8 @@ import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import io.karn.notify.Notify
 import kotlinx.android.synthetic.main.home.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class HomeActivity : AppCompatActivity(){
@@ -28,25 +32,6 @@ class HomeActivity : AppCompatActivity(){
         setContentView(R.layout.home)
 
         initView()
-
-
-        sextext.setOnClickListener{
-            Notify
-                .with(this)
-                .meta { //// Launch the MainActivity once the notification is clicked.
-                    clickIntent = PendingIntent.getActivity(this@HomeActivity,
-                        0,
-                        Intent(this@HomeActivity, HomeActivity::class.java),
-                        0)
-                    // Start a service which clears the badge count once the notification is dismissed.
-                }
-                .content { // this: Payload.Content.Default
-                    title = "예약 시간이 되었습니다."
-                    text = "ㄹㄹㄹㄹㄹㄹㄹ"
-                }
-                .show()
-        }
-
     }
 
     private fun initView() {

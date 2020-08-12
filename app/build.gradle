@@ -77,4 +77,5 @@ dependencies {
     implementation 'com.mohamedabulgasem:datetimepicker:1.1.0'
     implementation 'me.kareluo.ui:popmenu:1.1.0'
     implementation "io.karn:notify:1.3.0"
+    implementation 'com.github.zubairehman:AlarmManager:v1.2.0-alpha01'
 }

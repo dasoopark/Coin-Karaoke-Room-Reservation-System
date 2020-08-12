@@ -3,7 +3,9 @@ package kr.co.korearental.dongno
 
 
 import android.annotation.SuppressLint
+import android.app.PendingIntent
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,23 +13,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.view.menu.MenuBuilder
 import androidx.fragment.app.Fragment
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import io.karn.notify.Notify
 import kotlinx.android.synthetic.main.payment_song.*
 import kotlinx.android.synthetic.main.payment_song.view.*
-import kotlinx.android.synthetic.main.payment_time.*
-import kotlinx.android.synthetic.main.payment_time.view.*
-import me.kareluo.ui.OptionMenu
-import me.kareluo.ui.OptionMenuView.OnOptionMenuClickListener
-import me.kareluo.ui.PopupMenuView
-import me.kareluo.ui.PopupView
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.*
 
 const val INTERVAL = 5
@@ -37,7 +31,9 @@ class payment_songFragment: Fragment() {
      @SuppressLint("RestrictedApi", "ResourceType")
     var guide_1 = 0
     var guide_2 = 0
-     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
      @SuppressLint("RestrictedApi")
      override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle? ): View? {
          val view = inflater.inflate(R.layout.payment_song, container, false)
@@ -47,6 +43,7 @@ class payment_songFragment: Fragment() {
          val conoRef = database.getReference("Cono/${GlobalApplication.search_area1}/${GlobalApplication.search_area2}/${GlobalApplication.search_area3}/${GlobalApplication.search_cono}")
          var today = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(Calendar.getInstance().time)
 
+
          var select_time: String = ""
          var user_pay_count: Int = 0
          var cono_pay_count: Int = 0
@@ -54,6 +51,7 @@ class payment_songFragment: Fragment() {
          var time : String = ""
          var songs : String = ""
          var total_won : Int = 0
+
 
 
          // 예약 시간 선택
@@ -108,6 +106,7 @@ class payment_songFragment: Fragment() {
                  user_pay_count = p0.childrenCount.toInt()
              }
          })
+
 
          view.song_radiogroup.setOnCheckedChangeListener { radioGroup, i ->
              when (i) {
