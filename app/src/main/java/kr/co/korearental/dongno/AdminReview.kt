@@ -17,7 +17,7 @@ class AdminReview : AppCompatActivity() {
 
         val database = FirebaseDatabase.getInstance()
         val conoRef = database.getReference("Cono/${GlobalApplication.search_area1}/${GlobalApplication.search_area2}/${GlobalApplication.search_area3}/${GlobalApplication.search_cono}/Review")
-        val mRecyclerView=findViewById<RecyclerView>(R.id.admin_reviewRV)
+        val mRecyclerView=findViewById<RecyclerView>(R.id.admin_daysalesRV)
         val reviewList = arrayListOf<AdmReview>()
 
         conoRef.addListenerForSingleValueEvent(object : ValueEventListener{

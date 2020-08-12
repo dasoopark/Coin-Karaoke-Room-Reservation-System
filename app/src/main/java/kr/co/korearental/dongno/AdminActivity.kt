@@ -22,6 +22,11 @@ class AdminActivity : AppCompatActivity() {
             val intent = Intent(this, AdminReview::class.java)
             startActivity(intent)
         }
+
+        cardView_info.setOnClickListener{
+            val intent=Intent(this,AdminModifyInfo::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onBackPressed() {
