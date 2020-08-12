@@ -98,7 +98,7 @@
         app:cardCornerRadius="4dp"
         app:cardUseCompatPadding="true"
         app:layout_constraintTop_toBottomOf="@+id/cardView_day"
-        app:layout_constraintBottom_toTopOf="@+id/cardView_month"
+        app:layout_constraintBottom_toTopOf="@+id/cardView_info"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -131,7 +131,7 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cardView_month"
+        android:id="@+id/cardView_info"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="13dp"

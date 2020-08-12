@@ -28,25 +28,6 @@ class HomeActivity : AppCompatActivity(){
         setContentView(R.layout.home)
 
         initView()
-
-
-        sextext.setOnClickListener{
-            Notify
-                .with(this)
-                .meta { //// Launch the MainActivity once the notification is clicked.
-                    clickIntent = PendingIntent.getActivity(this@HomeActivity,
-                        0,
-                        Intent(this@HomeActivity, HomeActivity::class.java),
-                        0)
-                    // Start a service which clears the badge count once the notification is dismissed.
-                }
-                .content { // this: Payload.Content.Default
-                    title = "예약 시간이 되었습니다."
-                    text = "ㄹㄹㄹㄹㄹㄹㄹ"
-                }
-                .show()
-        }
-
     }
 
     private fun initView() {
