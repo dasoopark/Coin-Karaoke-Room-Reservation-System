@@ -18,6 +18,11 @@ class AdminActivity : AppCompatActivity() {
         admin_cononame.text = GlobalApplication.search_cono
         admin_conoaddress.text = intent.getStringExtra("address")
 
+        cardView_day.setOnClickListener {
+            val intent = Intent(this, AdminPay::class.java)
+            startActivity(intent)
+        }
+
         cardView_review.setOnClickListener {
             val intent = Intent(this, AdminReview::class.java)
             startActivity(intent)
