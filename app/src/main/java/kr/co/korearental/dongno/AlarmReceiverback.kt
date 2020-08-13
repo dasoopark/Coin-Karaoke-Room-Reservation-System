@@ -88,7 +88,6 @@ class AlarmReceiverback : BroadcastReceiver() {
                         todo.cono_date = i.date
                         realm.commitTransaction() //트랜젝션 종료
 
-
                         createNotificationChannel()
                         val contentIntent = Intent(context, MainActivity::class.java)
                         val contentPendingIntent = PendingIntent.getActivity(
@@ -101,7 +100,7 @@ class AlarmReceiverback : BroadcastReceiver() {
                         val builder =
                             context?.let {
                                 NotificationCompat.Builder(it, PRIMARY_CHANNEL_ID)
-                                    .setSmallIcon(R.drawable.ic_map)
+                                    .setSmallIcon(R.drawable.splash_icon)
                                     .setContentTitle("예약 알림 : ${i.cononame}")
                                     .setContentText("예약한 시간 ${i.time}이 되었습니다.")
                                     .setContentIntent(contentPendingIntent)
