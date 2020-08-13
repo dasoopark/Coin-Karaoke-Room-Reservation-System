@@ -2,13 +2,18 @@ package kr.co.korearental.dongno
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.util.Base64
 import android.util.Log
 import android.widget.CheckBox
+import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -30,26 +35,91 @@ import com.kakao.usermgmt.callback.UnLinkResponseCallback
 import com.kakao.usermgmt.response.MeV2Response
 import com.kakao.util.OptionalBoolean
 import com.kakao.util.exception.KakaoException
+import io.realm.Realm
+import io.realm.RealmQuery
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.login_dialog.view.*
+import kr.co.korearental.dongno.AlarmReceiverback.Companion.NOTIFICATION_ID
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import java.security.MessageDigest
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var callback: SessionCallback
     private val LOCATION_PERMISSION_REQUEST_CODE = 1000
-
     private var backKeyPressedTime: Long = 0
     private lateinit var toast: Toast
+    val realm = Realm.getDefaultInstance()
+    var isChecked = true
+
+    //현재 시간 알기
+    var now: Long = System.currentTimeMillis()
+    var mDate = Date(now)
+    var simpleDate: SimpleDateFormat = SimpleDateFormat("HH시 mm분")
+    var getTime: String = simpleDate.format(mDate)
+
+
+    @SuppressLint("ShortAlarm")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
+        val database= FirebaseDatabase.getInstance()
+        val userRef=database.getReference("User/${GlobalApplication.prefs.getString("userid","")}/payment")
+
+
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, AlarmReceiverback::class.java)  // 1
+        val pendingIntent = PendingIntent.getBroadcast(     // 2
+            this, NOTIFICATION_ID, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
+
+
+
+
+            //realm Db전체 데이터 확인하는 용도
+            Realm.getDefaultInstance().use { realm ->
+                realm.where(Todo::class.java).findAll().forEach {
+                    println("시작")
+                    println("${it.id}")
+                    println("${it.cono_name}")
+                    println("${it.cono_date}")
+                    println("${it.cono_time}")
+                }
+            }
+
+
+
+        // 리시버 전달하는 용도  확인하려면 토글 버튼 달아서 체크후 확인.
+          if (isChecked) {
+                val repeatInterval: Long = 5*1000
+                val triggerTime = (SystemClock.elapsedRealtime()    // 1
+                        + repeatInterval)
+                alarmManager.setInexactRepeating(     // 2
+                    AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    triggerTime, repeatInterval,
+                    pendingIntent
+                )
+
+            } else {
+                alarmManager.cancel(pendingIntent)    // 3
+            }
+
+////
+
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
+        }
 
         //manifests에 globalapplication 추가했는지 꼭 확인할 것!
         //카카오톡 자동 로그인
@@ -143,6 +213,7 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         Session.getCurrentSession().removeCallback(callback)
+
     }
 
     private inner class SessionCallback : ISessionCallback {
@@ -227,6 +298,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
     fun getLocationToHome(){
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
             && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -297,3 +369,5 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+
+

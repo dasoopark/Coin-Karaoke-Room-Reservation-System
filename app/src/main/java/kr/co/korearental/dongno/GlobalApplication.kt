@@ -2,6 +2,7 @@ package kr.co.korearental.dongno
 
 import android.app.Application
 import com.kakao.auth.*
+import io.realm.Realm
 
 class GlobalApplication : Application() {
 
@@ -97,6 +98,7 @@ class GlobalApplication : Application() {
         super.onCreate()
         instance = this
         KakaoSDK.init(KakaoSDKAdapter)
+        Realm.init(this) //realmdb 사용할수 있게함
     }
 
     override fun onTerminate() {
