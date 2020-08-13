@@ -15,7 +15,6 @@ import com.naver.maps.map.overlay.InfoWindow
 import com.naver.maps.map.overlay.Marker
 import com.naver.maps.map.util.FusedLocationSource
 
-
 class MapSearch: AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var naverMap: NaverMap
