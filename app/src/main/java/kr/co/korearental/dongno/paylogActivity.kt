@@ -1,15 +1,22 @@
 package kr.co.korearental.dongno
 
+import android.app.Activity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.MultiTransformation
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlinx.android.synthetic.main.mypagefragment.view.*
 import kotlinx.android.synthetic.main.paylog.*
 import kotlinx.android.synthetic.main.payment.*
 
@@ -25,12 +32,17 @@ class paylogActivity : AppCompatActivity() {
         val mRecyclerView =findViewById<RecyclerView>(R.id.paylogRV)
         var total_price : Int = 0
 
+        if (GlobalApplication.account_profile!="") {
+            Glide.with(applicationContext).load(GlobalApplication.account_profile).apply(RequestOptions.bitmapTransform(MultiTransformation(CenterCrop(),RoundedCorners(200)))).into(imageView)
+        }
+
         userRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
             override fun onDataChange(p0: DataSnapshot) {
                 for(snapshot in p0.children){
                     for(info in snapshot.children){
                         listpaylog.add(0, Paylog(info.child("cononame").value.toString(),snapshot.key.toString(),info.child("payTotal").value.toString()+"원"))
+                        info.child("reserveTime").value.toString()
                         total_price+=info.child("payTotal").value.toString().toInt()
                     }
                 }

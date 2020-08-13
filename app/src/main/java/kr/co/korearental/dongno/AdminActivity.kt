@@ -28,8 +28,9 @@ class AdminActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        cardView_info.setOnClickListener {
-
+        cardView_info.setOnClickListener{
+            val intent=Intent(this,AdminModifyInfo::class.java)
+            startActivity(intent)
         }
     }
 

@@ -23,7 +23,7 @@
         app:layout_constraintHorizontal_bias="0.0" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/admin_reviewRV"
+        android:id="@+id/admin_daysalesRV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
