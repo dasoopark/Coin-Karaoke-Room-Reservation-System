@@ -7,21 +7,18 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.PowerManager
 import android.os.SystemClock
-import android.provider.Settings
 import android.util.Base64
 import android.util.Log
 import android.widget.CheckBox
+import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.app.AlarmManagerCompat.setAndAllowWhileIdle
 import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -38,20 +35,18 @@ import com.kakao.usermgmt.callback.UnLinkResponseCallback
 import com.kakao.usermgmt.response.MeV2Response
 import com.kakao.util.OptionalBoolean
 import com.kakao.util.exception.KakaoException
-import com.zubair.alarmmanager.builder.AlarmBuilder
-import com.zubair.alarmmanager.enums.AlarmType
-import com.zubair.alarmmanager.interfaces.IAlarmListener
-import io.karn.notify.Notify
+import io.realm.Realm
+import io.realm.RealmQuery
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.login_dialog.view.*
+import kr.co.korearental.dongno.AlarmReceiverback.Companion.NOTIFICATION_ID
 import org.json.JSONObject
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import java.security.MessageDigest
+import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity() {
@@ -59,7 +54,14 @@ class MainActivity : AppCompatActivity() {
     private val LOCATION_PERMISSION_REQUEST_CODE = 1000
     private var backKeyPressedTime: Long = 0
     private lateinit var toast: Toast
-    var alarmlog = arrayListOf<Alarmlog>()
+    val realm = Realm.getDefaultInstance()
+    var isChecked = true
+
+    //현재 시간 알기
+    var now: Long = System.currentTimeMillis()
+    var mDate = Date(now)
+    var simpleDate: SimpleDateFormat = SimpleDateFormat("HH시 mm분")
+    var getTime: String = simpleDate.format(mDate)
 
 
     @SuppressLint("ShortAlarm")
@@ -71,46 +73,50 @@ class MainActivity : AppCompatActivity() {
         val database= FirebaseDatabase.getInstance()
         val userRef=database.getReference("User/${GlobalApplication.prefs.getString("userid","")}/payment")
 
-        userRef.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {}
-            override fun onDataChange(p0: DataSnapshot) {
-                for(snapshot in p0.children){
-                    for(info in snapshot.children){
-                        alarmlog.add(Alarmlog(info.child("cononame").value.toString(),info.child("reserveTime").value.toString()))
-                    }
+
+        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
+        val intent = Intent(this, AlarmReceiverback::class.java)  // 1
+        val pendingIntent = PendingIntent.getBroadcast(     // 2
+            this, NOTIFICATION_ID, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
+
+
+
+
+            //realm Db전체 데이터 확인하는 용도
+            Realm.getDefaultInstance().use { realm ->
+                realm.where(Todo::class.java).findAll().forEach {
+                    println("시작")
+                    println("${it.id}")
+                    println("${it.cono_name}")
+                    println("${it.cono_date}")
+                    println("${it.cono_time}")
                 }
             }
-        })
 
 
-        btnSetAlarm.setOnClickListener{
-            btnSetAlarm.text = alarmlog[0].cononame + alarmlog[0].time + alarmlog[1].cononame + alarmlog[1].time
-        }
 
-        val sharedPreferences =  getSharedPreferences("daily alarm", Context.MODE_PRIVATE)
-        val millis = sharedPreferences.getLong(  "nextNotifyTime",   Calendar.getInstance().timeInMillis )
-        val nextNotifyTime: Calendar = GregorianCalendar()
-        nextNotifyTime.timeInMillis = millis
-        // val nextDate = nextNotifyTime.time
+        // 리시버 전달하는 용도  확인하려면 토글 버튼 달아서 체크후 확인.
+          if (isChecked) {
+                val repeatInterval: Long = 5*1000
+                val triggerTime = (SystemClock.elapsedRealtime()    // 1
+                        + repeatInterval)
+                alarmManager.setInexactRepeating(     // 2
+                    AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    triggerTime, repeatInterval,
+                    pendingIntent
+                )
 
-        val test: String = "11시 30분"
-        var range = IntRange(0, 1)
-        var range2 = IntRange(4, 5)
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = System.currentTimeMillis()
-        calendar[Calendar.HOUR_OF_DAY] = test.slice(range).toInt()
-        calendar[Calendar.MINUTE] = test.slice(range2).toInt()
-        calendar[Calendar.SECOND] = 0
-        //  Preference에 설정한 값 저장
-        val editor =  getSharedPreferences("daily alarm", Context.MODE_PRIVATE).edit()
-        editor.putLong("nextNotifyTime", calendar.timeInMillis)
-        editor.apply()
-        diaryNotification(calendar)
-    //시간설정
+            } else {
+                alarmManager.cancel(pendingIntent)    // 3
+            }
+
+////
 
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
             && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION), LOCATION_PERMISSION_REQUEST_CODE)
         }
@@ -292,30 +298,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    //함수
-    fun diaryNotification(calendar: Calendar) {
-        val dailyNotify = true // 무조건 알람을 사용
-        val alarmIntent = Intent(this, AlarmReceiver::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, 0)
-        val alarmManager =  getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        // 사용자가 매일 알람을 허용했다면
-        if (dailyNotify) {
-            if (alarmManager != null) {
-                alarmManager.setRepeating(
-                    AlarmManager.RTC_WAKEUP, calendar.timeInMillis,
-                    AlarmManager.INTERVAL_DAY, pendingIntent
-                )
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    alarmManager.setExactAndAllowWhileIdle(
-                        AlarmManager.RTC_WAKEUP,
-                        calendar.timeInMillis,
-                        pendingIntent
-                    )
-                }
-            }
-        }
-    }
-    //함수///
 
     fun getLocationToHome(){
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED

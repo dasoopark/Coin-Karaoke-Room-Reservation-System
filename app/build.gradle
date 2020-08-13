@@ -1,6 +1,8 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'realm-android'
 apply plugin: 'com.google.gms.google-services'
 
 android {
@@ -80,4 +82,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics:17.4.4'
     implementation "io.karn:notify:1.3.0"
     implementation 'com.github.zubairehman:AlarmManager:v1.2.0-alpha01'
+    implementation "org.jetbrains.anko:anko-commons:0.10.5"
+    implementation 'io.realm:android-adapters:2.1.1'
+
 }
