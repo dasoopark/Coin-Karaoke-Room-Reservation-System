@@ -14,6 +14,7 @@ class AdminActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin)
+        title = "관리자"
 
         admin_cononame.text = GlobalApplication.search_cono
         admin_conoaddress.text = intent.getStringExtra("address")
