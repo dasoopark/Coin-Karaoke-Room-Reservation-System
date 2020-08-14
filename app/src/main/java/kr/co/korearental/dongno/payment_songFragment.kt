@@ -43,7 +43,6 @@ class payment_songFragment: Fragment() {
          val conoRef = database.getReference("Cono/${GlobalApplication.search_area1}/${GlobalApplication.search_area2}/${GlobalApplication.search_area3}/${GlobalApplication.search_cono}")
          var today = SimpleDateFormat("yyyy-MM-dd", Locale.KOREA).format(Calendar.getInstance().time)
 
-
          var select_time: String = ""
          var user_pay_count: Int = 0
          var cono_pay_count: Int = 0
@@ -51,8 +50,6 @@ class payment_songFragment: Fragment() {
          var time : String = ""
          var songs : String = ""
          var total_won : Int = 0
-
-
 
          // 예약 시간 선택
          view.time_choiceButton.setOnClickListener{

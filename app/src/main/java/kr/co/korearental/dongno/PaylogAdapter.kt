@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class PaylogAdapter(val context : Context, val Listpaylog : ArrayList<Paylog>) :
+    // paylogActivity와 Paylog의 list 정보를 잇기 위한 Adapter
     RecyclerView.Adapter<PaylogAdapter.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PaylogAdapter.Holder {
@@ -36,5 +37,4 @@ class PaylogAdapter(val context : Context, val Listpaylog : ArrayList<Paylog>) :
             price.text=paylog.price
         }
     }
-
 }

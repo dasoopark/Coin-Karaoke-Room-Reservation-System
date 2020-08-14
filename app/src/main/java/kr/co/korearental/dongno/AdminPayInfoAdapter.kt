@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class AdminPayInfoAdapter (val context : Context, val payInfoList : ArrayList<AdmPayInfo>) :
+    // AdminPayInfo와 AdmPayInfo의 list 정보를 잇기 위한 Adapter
     RecyclerView.Adapter<AdminPayInfoAdapter.Holder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdminPayInfoAdapter.Holder {

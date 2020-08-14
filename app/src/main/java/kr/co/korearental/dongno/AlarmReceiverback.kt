@@ -55,14 +55,12 @@ class AlarmReceiverback : BroadcastReceiver() {
         val database= FirebaseDatabase.getInstance()
         val userRef=database.getReference("User/${GlobalApplication.prefs.getString("userid","")}/payment/${getTime2}")
 
-
         userRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
             override fun onDataChange(p0: DataSnapshot) {
 
                     for(info in p0.children){
-                        alarmlogg.add(Alarmlog(info.child("cononame").value.toString(),info.child("reserveTime").value.toString(),
-                        getTime2))
+                        alarmlogg.add(Alarmlog(info.child("cononame").value.toString(), info.child("reserveTime").value.toString(), getTime2))
 
                         /* realm 데이터 전부 삭제 시키기 == 디버깅용
                         realm.beginTransaction()
@@ -148,7 +146,6 @@ class AlarmReceiverback : BroadcastReceiver() {
         }
         */
     }
-
 
     fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

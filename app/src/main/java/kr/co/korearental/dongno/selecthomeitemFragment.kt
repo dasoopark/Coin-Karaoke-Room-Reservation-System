@@ -32,7 +32,8 @@ class selecthomeitemFragment : Fragment(){
         val view = inflater.inflate(R.layout.selecthomeitemfragment, container, false)
         val database = FirebaseDatabase.getInstance()
         val idx = activity?.intent?.getStringExtra("cononame")
-        val conoRef = database.getReference("Cono/${GlobalApplication.search_area1}/${GlobalApplication.search_area2}/${GlobalApplication.search_area3}/${idx}")
+        GlobalApplication.search_cono = idx.toString()
+        val conoRef = database.getReference("Cono/${GlobalApplication.search_area1}/${GlobalApplication.search_area2}/${GlobalApplication.search_area3}/${GlobalApplication.search_cono}")
         val userRef = database.getReference("User/${GlobalApplication.prefs.getString("userid","0")}")
         val mRecyclerView=view.findViewById<RecyclerView>(R.id.reviewRV)
         lateinit var imageurl : String

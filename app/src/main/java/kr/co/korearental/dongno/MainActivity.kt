@@ -4,16 +4,13 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Base64
 import android.util.Log
 import android.widget.CheckBox
-import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -35,8 +32,8 @@ import com.kakao.usermgmt.callback.UnLinkResponseCallback
 import com.kakao.usermgmt.response.MeV2Response
 import com.kakao.util.OptionalBoolean
 import com.kakao.util.exception.KakaoException
+import com.kakao.util.helper.Utility
 import io.realm.Realm
-import io.realm.RealmQuery
 import kotlinx.android.synthetic.main.activity_main.*
 import kr.co.korearental.dongno.AlarmReceiverback.Companion.NOTIFICATION_ID
 import org.json.JSONObject
@@ -69,19 +66,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         val database= FirebaseDatabase.getInstance()
         val userRef=database.getReference("User/${GlobalApplication.prefs.getString("userid","")}/payment")
-
 
         val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
         val intent = Intent(this, AlarmReceiverback::class.java)  // 1
         val pendingIntent = PendingIntent.getBroadcast(     // 2
             this, NOTIFICATION_ID, intent,
             PendingIntent.FLAG_UPDATE_CURRENT)
-
-
-
 
             //realm Db전체 데이터 확인하는 용도
             Realm.getDefaultInstance().use { realm ->
@@ -93,8 +85,6 @@ class MainActivity : AppCompatActivity() {
                     println("${it.cono_time}")
                 }
             }
-
-
 
         // 리시버 전달하는 용도  확인하려면 토글 버튼 달아서 체크후 확인.
           if (isChecked) {
@@ -110,9 +100,6 @@ class MainActivity : AppCompatActivity() {
             } else {
                 alarmManager.cancel(pendingIntent)    // 3
             }
-
-////
-
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
             && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -362,6 +349,7 @@ class MainActivity : AppCompatActivity() {
                 val md: MessageDigest = MessageDigest.getInstance("SHA")
                 md.update(signature.toByteArray())
                 val something = String(Base64.encode(md.digest(), 0))
+                Toast.makeText(applicationContext, something, Toast.LENGTH_SHORT).show()
                 Log.e("Hash key", something)
             }
         } catch (e: Exception) {

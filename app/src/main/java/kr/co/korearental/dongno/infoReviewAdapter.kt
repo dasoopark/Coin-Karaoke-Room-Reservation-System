@@ -11,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.selecthomeitemfragment.*
 
 class infoReviewAdapter(val context : Context, val ListReview : ArrayList<infoReview>) :
+// selecthomeitemFragment와 infoReview의 list 정보를 잇기 위한 Adapter
     RecyclerView.Adapter<infoReviewAdapter.Holder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): infoReviewAdapter.Holder {
@@ -23,7 +24,7 @@ class infoReviewAdapter(val context : Context, val ListReview : ArrayList<infoRe
     }
 
     override fun onBindViewHolder(holder: infoReviewAdapter.Holder, position: Int) {
-        holder?.bind(ListReview[position],context)
+        holder.bind(ListReview[position],context)
     }
 
     inner class Holder(itemView : View?) : RecyclerView.ViewHolder(itemView!!){
@@ -33,7 +34,11 @@ class infoReviewAdapter(val context : Context, val ListReview : ArrayList<infoRe
 
         fun bind(review : infoReview, context : Context){
             val tmp_name=review.name
-            conoName?.text=tmp_name.substring(0,1)+"*"+ tmp_name.substring(2,3)
+            if (tmp_name.length == 2){
+                conoName?.text = tmp_name.substring(0,1)+"*"
+            }else {
+                conoName?.text = tmp_name.substring(0, 1) + "*" + tmp_name.substring(2, 3)
+            }
             rating?.rating=review.rating
             content?.text=review.content
         }

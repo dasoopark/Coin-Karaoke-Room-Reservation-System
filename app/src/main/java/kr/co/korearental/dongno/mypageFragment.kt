@@ -52,6 +52,7 @@ class mypageFragment : Fragment(){
 
         view.user_profile_email.text = GlobalApplication.account_email
         view.user_profile_name.text = GlobalApplication.account_name
+        // 프로필 정보가 있을 경우에만 이미지 src 변환
         if (GlobalApplication.account_profile!="") {
             Glide.with(requireActivity()).load(GlobalApplication.account_profile).apply(RequestOptions.bitmapTransform(MultiTransformation(CenterCrop(),RoundedCorners(200)))).into(view.user_profile_photo)
         }
@@ -69,7 +70,6 @@ class mypageFragment : Fragment(){
                 startActivity(intent)
             }
         }
-
 
         view.member_delete.setOnClickListener {
             val alertDialog = AlertDialog.Builder(requireContext()).setTitle("연결 끊기").setMessage("탈퇴하시겠습니까?")

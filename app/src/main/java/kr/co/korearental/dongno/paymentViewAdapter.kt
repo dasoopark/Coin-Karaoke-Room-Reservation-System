@@ -23,8 +23,6 @@ class paymentViewAdapter (fm : FragmentManager) : FragmentStatePagerAdapter(fm){
         return 2
     }
 
-
-
     override fun getPageTitle(position: Int): CharSequence? {
         return when(position){
             0 -> "곡"

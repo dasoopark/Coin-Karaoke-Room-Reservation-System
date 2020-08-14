@@ -24,6 +24,7 @@ class AdminPay : AppCompatActivity() {
         conoRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
             override fun onDataChange(p0: DataSnapshot) {
+                // snapshot = yyyy-mm-dd의 형태로 해당 ref 아래의 child의 paytotal 속성을 모두 더한 값을 구한다
                 for(snapshot in p0.children){
                     var bill : Int = 0
                     for(time in snapshot.children){
@@ -31,8 +32,10 @@ class AdminPay : AppCompatActivity() {
                             bill += index.child("payTotal").value.toString().toInt()
                         }
                     }
+                    // 최신순으로 정렬하기 위해 0번째 인덱스에 데이터 삽입
                     payList.add(0, AdmPay(snapshot.key.toString(), bill))
                 }
+                // 리사이클러뷰를 사용하여 데이터 반복 출력
                 mRecyclerView.layoutManager = LinearLayoutManager(applicationContext)
                 mRecyclerView.adapter = AdminPayAdapter(applicationContext, payList)
                 mRecyclerView.setHasFixedSize(true)

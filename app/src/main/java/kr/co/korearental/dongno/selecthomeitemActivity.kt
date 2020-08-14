@@ -72,6 +72,8 @@ class selecthomeitemActivity : AppCompatActivity(){
                                     conoRef.child("${index}/review_content").setValue(dialogView.reviewContent.text.toString())
                                     conoRef.child("${index}/rating").setValue(dialogView.ratingBar.rating)
                                     conoRef.child("${index}/Time").setValue(now)
+                                    finish()
+                                    startActivity(intent)
                                 }
                             })
                         }

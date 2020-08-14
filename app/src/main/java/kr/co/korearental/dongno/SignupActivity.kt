@@ -1,17 +1,20 @@
 package kr.co.korearental.dongno
 
 import android.os.Bundle
+import android.text.TextWatcher
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.sign.*
+import java.util.regex.Pattern
 
 class SignupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.sign)
         title = "회원가입"
+
 
         bSignUp.setOnClickListener {
             if(etEmail.text.toString() == ""){

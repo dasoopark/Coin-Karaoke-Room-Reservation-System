@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 class AdminReviewAdapter(val context : Context, val reviewList : ArrayList<AdmReview>) :
+    // AdminReview와 AdmReview의 list 정보를 잇기 위한 Adapter
     RecyclerView.Adapter<AdminReviewAdapter.Holder>(){
 
 
@@ -22,7 +23,7 @@ class AdminReviewAdapter(val context : Context, val reviewList : ArrayList<AdmRe
         }
 
         override fun onBindViewHolder(holder: AdminReviewAdapter.Holder, position: Int) {
-            holder?.bind(reviewList[position],context)
+            holder.bind(reviewList[position],context)
         }
 
         inner class Holder(itemView : View?) : RecyclerView.ViewHolder(itemView!!){
@@ -33,7 +34,12 @@ class AdminReviewAdapter(val context : Context, val reviewList : ArrayList<AdmRe
 
             fun bind(review : AdmReview, context : Context){
                 val tmp_name=review.name
-                conoName?.text=tmp_name.substring(0,1)+"*"+ tmp_name.substring(2,3)
+                // 사용자의 이름을 전부 표출하지 않기 위해 중간 글자는 자른다.
+                if (tmp_name.length == 2){
+                    conoName?.text = tmp_name.substring(0,1)+"*"
+                }else {
+                    conoName?.text = tmp_name.substring(0, 1) + "*" + tmp_name.substring(2, 3)
+                }
                 rating?.rating=review.rating
                 date?.text = review.date
                 content?.text=review.content

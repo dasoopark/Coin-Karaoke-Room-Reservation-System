@@ -28,6 +28,8 @@ class AdminReview : AppCompatActivity() {
                     if(snapshot.key.equals("index")){
                         continue
                     }else if(snapshot.key.equals("rating_avg")){
+                        // rating_avg의 value는 실수의 형태로 4.33333...의 형태로 저장되기 때문에
+                        // 화면에 표출할 때 소수점 아래 2자리만 표출하기 위해서 substring으로 자른다.
                         var rating_avg = snapshot.value.toString()
                         if(rating_avg.length > 4){
                             rating_avg = rating_avg.substring(0, 4)

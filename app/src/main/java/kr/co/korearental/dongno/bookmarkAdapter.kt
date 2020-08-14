@@ -17,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.selecthomeitemfragment.*
 
 class bookmarkAdapter(val context : Context, val Listbookmark : ArrayList<bookmark>) :
+    // bookmarkFragment와 bookmark의 list 정보를 잇기 위한 Adapter
     RecyclerView.Adapter<bookmarkAdapter.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): bookmarkAdapter.Holder {
@@ -31,6 +32,7 @@ class bookmarkAdapter(val context : Context, val Listbookmark : ArrayList<bookma
     override fun onBindViewHolder(holder: bookmarkAdapter.Holder, position: Int) {
         holder.bind(Listbookmark[position],context)
         holder.itemView.setOnClickListener {
+            // 해당 item을 클릭하면 bookmark에서 상세화면으로 넘어간다.
             val intent = Intent(context, selecthomeitemActivity::class.java)
             intent.putExtra("cononame", Listbookmark[position].name)
             intent.putExtra("x", Listbookmark[position].x)
@@ -41,6 +43,7 @@ class bookmarkAdapter(val context : Context, val Listbookmark : ArrayList<bookma
             context.startActivity(intent)
         }
     }
+
     inner class Holder(itemView: View): RecyclerView.ViewHolder(itemView){
         val conoImg = itemView.findViewById<ImageView>(R.id.imgcono)
         val conoName= itemView.findViewById<TextView>(R.id.txtname)

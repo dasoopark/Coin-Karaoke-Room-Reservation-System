@@ -19,16 +19,13 @@ class AlarmAdapter(realmResult: OrderedRealmCollection<Todo>) :
         val vh: ViewHolder
         val view: View
         if (convertView == null) {
-            view = LayoutInflater.from(parent?.context)
-                .inflate(R.layout.item_alarm, parent, false)
+            view = LayoutInflater.from(parent?.context).inflate(R.layout.item_alarm, parent, false)
             vh = ViewHolder(view)
             view.tag = vh
-        }
-        else {
+        } else {
             view = convertView
             vh = view.tag as ViewHolder
         }
-
 
         if (adapterData != null) {
             val item = adapterData!![position]

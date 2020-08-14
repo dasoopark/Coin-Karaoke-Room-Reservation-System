@@ -43,6 +43,7 @@ class paylogActivity : AppCompatActivity() {
                     for(info in snapshot.children){
                         listpaylog.add(0, Paylog(info.child("cononame").value.toString(),snapshot.key.toString(),info.child("payTotal").value.toString()+"원"))
                         info.child("reserveTime").value.toString()
+                        // 결제 총 액을 계산하기 위한 변수
                         total_price+=info.child("payTotal").value.toString().toInt()
                     }
                 }
@@ -52,7 +53,6 @@ class paylogActivity : AppCompatActivity() {
                 mRecyclerView.setHasFixedSize((true))
             }
         })
-
 
         val actionbar = supportActionBar
         if (actionbar != null) {

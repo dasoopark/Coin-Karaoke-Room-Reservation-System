@@ -23,6 +23,7 @@ import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.mypagefragment.view.*
 
 class ListConoAdapter(val context : Context, val ListCono: ArrayList<Cono> ) :
+    // homeFragment와 Cono의 list 정보를 잇기 위한 Adapter
     RecyclerView.Adapter<ListConoAdapter.Holder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListConoAdapter.Holder {
@@ -37,6 +38,7 @@ class ListConoAdapter(val context : Context, val ListCono: ArrayList<Cono> ) :
     override fun onBindViewHolder(holder: ListConoAdapter.Holder, position: Int) {
         holder.bind(ListCono[position],context)
         holder.itemView.setOnClickListener {
+            // 해당 item을 클릭할 경우 상세 화면으로 이동한다
             val intent = Intent(context, selecthomeitemActivity::class.java)
             intent.putExtra("cononame", ListCono[position].name)
             GlobalApplication.search_cono=ListCono[position].name
@@ -52,6 +54,7 @@ class ListConoAdapter(val context : Context, val ListCono: ArrayList<Cono> ) :
         val conoRating= itemView.findViewById<RatingBar>(R.id.rating)
 
         fun bind(cono:Cono, context:Context){
+            // Glide 라이브러리를 사용하여 코인노래방의 이미지를 가져온다.
             Glide.with(context).load(cono.img).apply(RequestOptions.bitmapTransform(MultiTransformation(CenterCrop()))).into(conoImg)
             conoName.text=cono.name
             conoAddress.text=cono.address

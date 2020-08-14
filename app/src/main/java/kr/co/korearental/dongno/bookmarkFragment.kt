@@ -19,12 +19,11 @@ class bookmarkFragment  : Fragment(){
     val userRef = database.getReference("User/${GlobalApplication.prefs.getString("userid","0")}/bookmark" )
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
         val view: View = inflater.inflate(R.layout.bookmarkfragment, container, false)
         val mRecyclerView=view.findViewById(R.id.bookmarkRV) as RecyclerView
+
         userRef.addListenerForSingleValueEvent(object: ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
-
             override fun onDataChange(p0: DataSnapshot) {
                 GlobalApplication.listbookmark.clear()
                 for (area1 in p0.children) {
@@ -49,9 +48,7 @@ class bookmarkFragment  : Fragment(){
                 mRecyclerView.adapter=bookmarkAdapter(requireContext(),GlobalApplication.listbookmark)
                 mRecyclerView.setHasFixedSize(true)
             }
-            
         })
-
 
         return view
     }

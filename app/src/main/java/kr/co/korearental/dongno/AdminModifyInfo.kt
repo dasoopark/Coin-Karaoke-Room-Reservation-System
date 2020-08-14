@@ -24,6 +24,7 @@ class AdminModifyInfo : AppCompatActivity() {
         conoRef.child("info").addListenerForSingleValueEvent(object: ValueEventListener{
             override fun onCancelled(error: DatabaseError) {}
             override fun onDataChange(snapshot: DataSnapshot) {
+                // 정보 수정 이전에 기존 데이터를 edittext에 넣어준다
                 txt_name.text=GlobalApplication.search_cono
                 for(info in snapshot.children){
                     if(info.key.equals("address")){
